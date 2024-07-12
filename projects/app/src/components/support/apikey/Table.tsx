@@ -91,19 +91,19 @@ const ApiKeyTable = ({ tips, appId }: { tips: string; appId?: string }) => {
       <Box display={['block', 'flex']} py={[0, 3]} px={5} alignItems={'center'}>
         <Box flex={1}>
           <Flex alignItems={'flex-end'}>
-            <Box fontSize={['md', 'xl']} fontWeight={'bold'}>
+            {/* <Box fontSize={['md', 'xl']} fontWeight={'bold'}>
               {t('support.openapi.Api manager')}
-            </Box>
-            {feConfigs?.docUrl && (
-              <Link
-                href={feConfigs.openAPIDocUrl || getDocPath('/docs/development/openapi')}
-                target={'_blank'}
-                ml={1}
-                color={'primary.500'}
-              >
-                {t('common.Read document')}
-              </Link>
-            )}
+            </Box> */}
+            {/* {feConfigs?.docUrl && (
+              // <Link
+              //   href={feConfigs.openAPIDocUrl || getDocPath('/docs/development/openapi')}
+              //   target={'_blank'}
+              //   ml={1}
+              //   color={'primary.500'}
+              // >
+              //   {t('common.Read document')}
+              // </Link>
+            )} */}
           </Flex>
           <Box fontSize={'sm'} color={'myGray.600'}>
             {tips}

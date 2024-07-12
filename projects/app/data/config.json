@@ -11,6 +11,25 @@
   },
   "llmModels": [
     {
+      "model": "chatglm3",
+      "name": "chatglm3",
+      "avatar": "/imgs/model/openai.svg",
+      "maxContext": 8000,
+      "maxResponse": 8000,
+      "quoteMaxToken": 2000,
+      "maxTemperature": 1,
+      "vision": false,
+      "datasetProcess": true,
+      "usedInClassify": true,
+      "usedInExtractFields": true,
+      "usedInToolCall": true,
+      "usedInQueryExtension": true,
+      "toolChoice": true,
+      "functionCall": true,
+      "defaultSystemChatPrompt": "",
+      "defaultConfig": {}
+    },
+    {
       "model": "gpt-3.5-turbo",
       "name": "gpt-3.5-turbo",
       "maxContext": 16000,
@@ -81,6 +100,13 @@
     }
   ],
   "vectorModels": [
+    {
+      "model": "m3e",
+      "name": "m3e",
+      "price": 0.1,
+      "defaultToken": 500,
+      "maxToken": 1800
+    },
     {
       "model": "text-embedding-3-large",
       "name": "Embedding-3-large",

@@ -118,22 +118,22 @@ const Navbar = ({ unread }: { unread: number }) => {
             {...itemStyles}
             {...(item.activeLink.includes(router.pathname)
               ? {
-                  color: 'primary.600',
-                  bg: 'white',
-                  boxShadow:
-                    '0px 0px 1px 0px rgba(19, 51, 107, 0.08), 0px 4px 4px 0px rgba(19, 51, 107, 0.05)'
-                }
+                color: 'primary.600',
+                bg: 'white',
+                boxShadow:
+                  '0px 0px 1px 0px rgba(19, 51, 107, 0.08), 0px 4px 4px 0px rgba(19, 51, 107, 0.05)'
+              }
               : {
-                  color: 'myGray.500',
-                  bg: 'transparent',
-                  _hover: {
-                    bg: 'rgba(255,255,255,0.9)'
-                  }
-                })}
+                color: 'myGray.500',
+                bg: 'transparent',
+                _hover: {
+                  bg: 'rgba(255,255,255,0.9)'
+                }
+              })}
             {...(item.link !== router.asPath
               ? {
-                  onClick: () => router.push(item.link)
-                }
+                onClick: () => router.push(item.link)
+              }
               : {})}
           >
             <MyIcon
@@ -169,35 +169,8 @@ const Navbar = ({ unread }: { unread: number }) => {
           </Link>
         </Box>
       )}
-      {(feConfigs?.docUrl || feConfigs?.chatbotUrl) && (
-        <MyTooltip label={t('common.system.Use Helper')} placement={'right-end'}>
-          <Link
-            {...itemStyles}
-            {...hoverStyle}
-            href={feConfigs?.chatbotUrl || getDocPath('/docs/intro')}
-            target="_blank"
-            mb={0}
-            color={'myGray.500'}
-          >
-            <MyIcon name={'common/courseLight'} width={'24px'} height={'24px'} />
-          </Link>
-        </MyTooltip>
-      )}
-      {feConfigs?.show_git && (
-        <MyTooltip label={`Git Star: ${gitStar}`} placement={'right-end'}>
-          <Link
-            as={NextLink}
-            href="https://github.com/labring/FastGPT"
-            target={'_blank'}
-            {...itemStyles}
-            {...hoverStyle}
-            mt={0}
-            color={'myGray.500'}
-          >
-            <MyIcon name={'common/gitInlight'} width={'26px'} height={'26px'} />
-          </Link>
-        </MyTooltip>
-      )}
+
+
     </Flex>
   );
 };

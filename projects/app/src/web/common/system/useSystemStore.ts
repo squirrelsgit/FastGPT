@@ -99,7 +99,7 @@ export const useSystemStore = create<State>()(
             set((state) => {
               state.gitStar = git.stargazers_count;
             });
-          } catch (error) {}
+          } catch (error) { }
         },
 
         isNotSufficientModal: false,

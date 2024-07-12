@@ -232,7 +232,7 @@ const MyInfo = () => {
                 if (val === userInfo?.team?.memberName) return;
                 try {
                   putUpdateMemberName(val);
-                } catch (error) {}
+                } catch (error) { }
               }}
             />
           </Flex>
@@ -542,7 +542,7 @@ const Other = () => {
   );
   return (
     <Box>
-      <Grid gridGap={4} mt={3}>
+      {/* <Grid gridGap={4} mt={3}>
         {feConfigs?.docUrl && (
           <Link
             bg={'white'}
@@ -665,7 +665,7 @@ const Other = () => {
           onClose={onCloseOpenai}
         />
       )}
-      {isOpenConcat && <CommunityModal onClose={onCloseConcat} />}
+      {isOpenConcat && <CommunityModal onClose={onCloseConcat} />} */}
     </Box>
   );
 };
