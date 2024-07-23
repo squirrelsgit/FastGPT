@@ -103,7 +103,7 @@ const ChatTest = ({
       overflowX={'auto'}
       bg={'white'}
     >
-      <Flex px={[2, 5]}>
+      {/* <Flex px={[2, 5]}>
         <Box fontSize={['md', 'xl']} fontWeight={'bold'} flex={1}>
           {appT('Chat Debug')}
         </Box>
@@ -121,8 +121,8 @@ const ChatTest = ({
             }}
           />
         </MyTooltip>
-      </Flex>
-      <Box flex={1}>
+      </Flex> */}
+      {/* <Box flex={1}>
         <ChatBox
           ref={ChatBoxRef}
           appId={appDetail._id}
@@ -132,10 +132,10 @@ const ChatTest = ({
           chatConfig={chatConfig}
           showFileSelector={checkChatSupportSelectFileByModules(workflowData.nodes)}
           onStartChat={startChat}
-          onDelMessage={() => {}}
+          onDelMessage={() => { }}
         />
-      </Box>
-      {appDetail.type !== AppTypeEnum.simple && (
+      </Box> */}
+      {/* {appDetail.type !== AppTypeEnum.simple && (
         <Flex
           position={'absolute'}
           top={0}
@@ -153,7 +153,7 @@ const ChatTest = ({
         >
           <Box>{appT('Advance App TestTip')}</Box>
         </Flex>
-      )}
+      )} */}
     </Flex>
   );
 };

@@ -77,7 +77,7 @@ const AIChatSettingsModal = ({
       title={
         <>
           {t('core.ai.AI settings')}
-          {feConfigs?.docUrl && (
+          {/* {feConfigs?.docUrl && (
             <Link
               href={getDocPath('/docs/course/ai_settings/')}
               target={'_blank'}
@@ -88,7 +88,7 @@ const AIChatSettingsModal = ({
             >
               {t('common.Read intro')}
             </Link>
-          )}
+          )} */}
         </>
       }
       w={'500px'}

@@ -90,7 +90,7 @@ const ChatHistorySlider = ({
     () =>
       !activeChatId
         ? //@ts-ignore
-          [{ id: activeChatId, title: t('core.chat.New Chat') }].concat(history)
+        [{ id: activeChatId, title: t('core.chat.New Chat') }].concat(history)
         : history,
     [activeChatId, history, t]
   );
@@ -119,7 +119,7 @@ const ChatHistorySlider = ({
       whiteSpace={'nowrap'}
     >
       {isPc && (
-        <MyTooltip label={canRouteToDetail ? appT('App Detail') : ''} offset={[0, 0]}>
+        <MyTooltip label={canRouteToDetail ? appT('Rele Repository') : ''} offset={[0, 0]}>
           <Flex
             pt={5}
             pb={2}
@@ -136,7 +136,7 @@ const ChatHistorySlider = ({
           >
             <Avatar src={appAvatar} />
             <Box flex={'1 0 0'} w={0} ml={2} fontWeight={'bold'} className={'textEllipsis'}>
-              {appName}
+              {appName} <a>关联知识库</a>
             </Box>
           </Flex>
         </MyTooltip>
@@ -208,14 +208,14 @@ const ChatHistorySlider = ({
                 bg={item.top ? '#E6F6F6 !important' : ''}
                 {...(item.id === activeChatId
                   ? {
-                      backgroundColor: 'primary.50 !important',
-                      color: 'primary.600'
-                    }
+                    backgroundColor: 'primary.50 !important',
+                    color: 'primary.600'
+                  }
                   : {
-                      onClick: () => {
-                        onChangeChat(item.id);
-                      }
-                    })}
+                    onClick: () => {
+                      onChangeChat(item.id);
+                    }
+                  })}
               >
                 <MyIcon
                   name={item.id === activeChatId ? 'core/chat/chatFill' : 'core/chat/chatLight'}
@@ -301,20 +301,20 @@ const ChatHistorySlider = ({
                   alignItems={'center'}
                   {...(item._id === appId
                     ? {
-                        backgroundColor: 'primary.50 !important',
-                        color: 'primary.600'
-                      }
+                      backgroundColor: 'primary.50 !important',
+                      color: 'primary.600'
+                    }
                     : {
-                        onClick: () => {
-                          router.replace({
-                            query: {
-                              ...router.query,
-                              appId: item._id
-                            }
-                          });
-                          onClose();
-                        }
-                      })}
+                      onClick: () => {
+                        router.replace({
+                          query: {
+                            ...router.query,
+                            appId: item._id
+                          }
+                        });
+                        onClose();
+                      }
+                    })}
                 >
                   <Avatar src={item.avatar} w={'24px'} />
                   <Box ml={2} className={'textEllipsis'}>

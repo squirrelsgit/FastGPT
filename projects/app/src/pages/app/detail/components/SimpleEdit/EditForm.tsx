@@ -215,7 +215,7 @@ const EditForm = ({
       <Box px={4}>
         <Box bg={'white'} borderRadius={'md'} borderWidth={'1px'} borderColor={'borderColor.base'}>
           {/* ai */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <Flex alignItems={'center'}>
               <MyIcon name={'core/app/simpleMode/ai'} w={'20px'} />
               <Box ml={2} flex={1}>
@@ -264,7 +264,7 @@ const EditForm = ({
                 />
               </Box>
             </Box>
-          </Box>
+          </Box> */}
 
           {/* dataset */}
           <Box {...BoxStyles}>
@@ -283,7 +283,7 @@ const EditForm = ({
               >
                 {t('common.Choose')}
               </Button>
-              <Button
+              {/* <Button
                 variant={'transparentBase'}
                 leftIcon={<MyIcon name={'edit'} w={'14px'} />}
                 iconSpacing={1}
@@ -292,7 +292,7 @@ const EditForm = ({
                 onClick={onOpenDatasetParams}
               >
                 {t('common.Params')}
-              </Button>
+              </Button> */}
             </Flex>
             {datasetSearchSetting.datasets?.length > 0 && (
               <Box my={3}>
@@ -340,7 +340,7 @@ const EditForm = ({
           </Box>
 
           {/* tool choice */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <Flex alignItems={'center'}>
               <Flex alignItems={'center'} flex={1}>
                 <MyIcon name={'core/app/toolCall'} w={'20px'} />
@@ -396,40 +396,40 @@ const EditForm = ({
                 </Flex>
               ))}
             </Grid>
-          </Box>
+          </Box> */}
 
           {/* variable */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <VariableEdit
               variables={variables}
               onChange={(e) => {
                 setValue('chatConfig.variables', e);
               }}
             />
-          </Box>
+          </Box> */}
 
           {/* welcome */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <WelcomeTextConfig
               defaultValue={getValues('chatConfig.welcomeText')}
               onBlur={(e) => {
                 setValue('chatConfig.welcomeText', e.target.value || '');
               }}
             />
-          </Box>
+          </Box> */}
 
           {/* tts */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <TTSSelect
               value={tts}
               onChange={(e) => {
                 setValue('chatConfig.ttsConfig', e);
               }}
             />
-          </Box>
+          </Box> */}
 
           {/* whisper */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <WhisperConfig
               isOpenAudio={tts?.type !== TTSTypeEnum.none}
               value={whisperConfig}
@@ -437,7 +437,7 @@ const EditForm = ({
                 setValue('chatConfig.whisperConfig', e);
               }}
             />
-          </Box>
+          </Box> */}
 
           {/* question guide */}
           <Box {...BoxStyles}>
@@ -451,7 +451,7 @@ const EditForm = ({
           </Box>
 
           {/* question tips */}
-          <Box {...BoxStyles}>
+          {/* <Box {...BoxStyles}>
             <InputGuideConfig
               appId={appDetail._id}
               value={inputGuideConfig}
@@ -459,17 +459,17 @@ const EditForm = ({
                 setValue('chatConfig.chatInputGuide', e);
               }}
             />
-          </Box>
+          </Box> */}
 
           {/* timer trigger */}
-          <Box {...BoxStyles} borderBottom={'none'}>
+          {/* <Box {...BoxStyles} borderBottom={'none'}>
             <ScheduledTriggerConfig
               value={scheduledTriggerConfig}
               onChange={(e) => {
                 setValue('chatConfig.scheduledTriggerConfig', e);
               }}
             />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
 

@@ -111,19 +111,19 @@ const CreateModal = ({ onClose, parentId }: { onClose: () => void; parentId?: st
               },
               ...(feConfigs.isPlus
                 ? [
-                    {
-                      title: datasetT('Website Dataset'),
-                      value: DatasetTypeEnum.websiteDataset,
-                      icon: 'core/dataset/websiteDataset',
-                      desc: datasetT('Website Dataset Desc')
-                    },
-                    {
-                      title: datasetT('External File'),
-                      value: DatasetTypeEnum.externalFile,
-                      icon: 'core/dataset/externalDataset',
-                      desc: datasetT('External file Dataset Desc')
-                    }
-                  ]
+                  {
+                    title: datasetT('Website Dataset'),
+                    value: DatasetTypeEnum.websiteDataset,
+                    icon: 'core/dataset/websiteDataset',
+                    desc: datasetT('Website Dataset Desc')
+                  },
+                  {
+                    title: datasetT('External File'),
+                    value: DatasetTypeEnum.externalFile,
+                    icon: 'core/dataset/externalDataset',
+                    desc: datasetT('External file Dataset Desc')
+                  }
+                ]
                 : [])
             ]}
             value={getValues('type')}
@@ -164,7 +164,7 @@ const CreateModal = ({ onClose, parentId }: { onClose: () => void; parentId?: st
         </Box>
         {filterNotHiddenVectorModelList.length > 1 && (
           <Flex mt={6} alignItems={'center'}>
-            <Flex alignItems={'center'} flex={'0 0 100px'}>
+            {/* <Flex alignItems={'center'} flex={'0 0 100px'}>
               {t('core.ai.model.Vector Model')}
               <MyTooltip label={t('core.dataset.embedding model tip')}>
                 <QuestionOutlineIcon ml={1} />
@@ -183,12 +183,12 @@ const CreateModal = ({ onClose, parentId }: { onClose: () => void; parentId?: st
                   setRefresh((state) => !state);
                 }}
               />
-            </Box>
+            </Box> */}
           </Flex>
         )}
         {datasetModelList.length > 1 && (
           <Flex mt={6} alignItems={'center'}>
-            <Box flex={'0 0 100px'}>{t('core.ai.model.Dataset Agent Model')}</Box>
+            {/* <Box flex={'0 0 100px'}>{t('core.ai.model.Dataset Agent Model')}</Box>
             <Box flex={1}>
               <AIModelSelector
                 w={'100%'}
@@ -202,7 +202,7 @@ const CreateModal = ({ onClose, parentId }: { onClose: () => void; parentId?: st
                   setRefresh((state) => !state);
                 }}
               />
-            </Box>
+            </Box> */}
           </Flex>
         )}
       </ModalBody>

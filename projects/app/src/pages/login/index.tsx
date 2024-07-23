@@ -15,6 +15,7 @@ import Loading from '@fastgpt/web/components/common/MyLoading';
 
 const RegisterForm = dynamic(() => import('./components/RegisterForm'));
 const ForgetPasswordForm = dynamic(() => import('./components/ForgetPasswordForm'));
+const UpdatePswModal = dynamic(() => import('../account/components/UpdatePswModal'));
 const WechatForm = dynamic(() => import('./components/LoginForm/WechatForm'));
 const CommunityModal = dynamic(() => import('@/components/CommunityModal'));
 
@@ -36,7 +37,7 @@ const Login = () => {
       setUserInfo(res.user);
       setToken(res.token);
       setTimeout(() => {
-        router.push(lastRoute ? decodeURIComponent(lastRoute) : '/app/list');
+        router.push(lastRoute ? decodeURIComponent(lastRoute) : '/chat');
       }, 300);
     },
     [lastRoute, router, setLastChatId, setLastChatAppId, setUserInfo]
@@ -47,6 +48,7 @@ const Login = () => {
       [LoginPageTypeEnum.passwordLogin]: LoginForm,
       [LoginPageTypeEnum.register]: RegisterForm,
       [LoginPageTypeEnum.forgetPassword]: ForgetPasswordForm,
+      [LoginPageTypeEnum.updatePswModal]: UpdatePswModal,
       [LoginPageTypeEnum.wechat]: WechatForm
     };
 
@@ -63,7 +65,7 @@ const Login = () => {
   }, [feConfigs.oauth]);
   useEffect(() => {
     clearToken();
-    router.prefetch('/app/list');
+    router.prefetch('/dataset/list');
   }, []);
 
   return (
@@ -105,7 +107,7 @@ const Login = () => {
               </Center>
             )}
           </Box>
-          {feConfigs?.concatMd && (
+          {/* {feConfigs?.concatMd && (
             <Box
               mt={8}
               color={'primary.700'}
@@ -115,7 +117,7 @@ const Login = () => {
             >
               无法登录，点击联系
             </Box>
-          )}
+          )} */}
         </Flex>
 
         {isOpen && <CommunityModal onClose={onClose} />}

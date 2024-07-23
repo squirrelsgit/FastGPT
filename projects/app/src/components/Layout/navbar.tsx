@@ -64,6 +64,7 @@ const Navbar = ({ unread }: { unread: number }) => {
     ],
     [lastChatAppId, lastChatId, t]
   );
+  const updatedNavbarList = navbarList.filter(item => item.label !== t('navbar.Plugin')).filter(item => item.label !== t('navbar.Apps'));
 
   const itemStyles: BoxProps & LinkProps = {
     my: 3,
@@ -112,7 +113,7 @@ const Navbar = ({ unread }: { unread: number }) => {
       </Box>
       {/* 导航列表 */}
       <Box flex={1}>
-        {navbarList.map((item) => (
+        {updatedNavbarList.map((item) => (
           <Box
             key={item.link}
             {...itemStyles}

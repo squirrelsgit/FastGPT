@@ -43,9 +43,9 @@ const RenderHeaderContainer = React.memo(function RenderHeaderContainer({
   setWorkflowTestData: React.Dispatch<
     React.SetStateAction<
       | {
-          nodes: StoreNodeItemType[];
-          edges: StoreEdgeItemType[];
-        }
+        nodes: StoreNodeItemType[];
+        edges: StoreEdgeItemType[];
+      }
       | undefined
     >
   >;
@@ -126,7 +126,7 @@ const RenderHeaderContainer = React.memo(function RenderHeaderContainer({
           })
         );
         // ChatTestRef.current?.resetChatTest();
-      } catch (error) {}
+      } catch (error) { }
 
       setIsSaving(false);
 
@@ -167,7 +167,7 @@ const RenderHeaderContainer = React.memo(function RenderHeaderContainer({
     try {
       await onclickSave();
       onClose();
-    } catch (error) {}
+    } catch (error) { }
   }, [onClose, onclickSave]);
 
   const onExportWorkflow = useCallback(async () => {

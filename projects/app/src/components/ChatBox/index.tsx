@@ -59,6 +59,7 @@ import { useCreation } from 'ahooks';
 import { AppChatConfigType } from '@fastgpt/global/core/app/type';
 import type { StreamResponseType } from '@/web/common/api/fetch';
 import { useContextSelector } from 'use-context-selector';
+import team from '@fastgpt/global/common/error/code/team';
 
 const ResponseTags = dynamic(() => import('./components/ResponseTags'));
 const FeedbackModal = dynamic(() => import('./components/FeedbackModal'));
@@ -345,7 +346,7 @@ const ChatBox = (
             scrollToBottom();
           }, 100);
         }
-      } catch (error) {}
+      } catch (error) { }
     },
     [questionGuide, shareId, outLinkUid, teamId, teamToken]
   );
@@ -423,13 +424,13 @@ const ChatBox = (
                 })),
                 ...(text
                   ? [
-                      {
-                        type: ChatItemValueTypeEnum.text,
-                        text: {
-                          content: text
-                        }
+                    {
+                      type: ChatItemValueTypeEnum.text,
+                      text: {
+                        content: text
                       }
-                    ]
+                    }
+                  ]
                   : [])
               ] as UserChatItemValueItemType[],
               status: 'finish'
@@ -495,16 +496,16 @@ const ChatBox = (
                 history: newChatList.map((item, i) =>
                   i === newChatList.length - 1
                     ? {
-                        ...item,
-                        value: [
-                          {
-                            type: ChatItemValueTypeEnum.text,
-                            text: {
-                              content: responseText
-                            }
+                      ...item,
+                      value: [
+                        {
+                          type: ChatItemValueTypeEnum.text,
+                          text: {
+                            content: responseText
                           }
-                        ]
-                      }
+                        }
+                      ]
+                    }
                     : item
                 )
               });
@@ -674,9 +675,9 @@ const ChatBox = (
           state.map((chatItem) =>
             chatItem.dataId === chat.dataId
               ? {
-                  ...chatItem,
-                  userGoodFeedback: isGoodFeedback ? undefined : 'yes'
-                }
+                ...chatItem,
+                userGoodFeedback: isGoodFeedback ? undefined : 'yes'
+              }
               : chatItem
           )
         );
@@ -691,7 +692,7 @@ const ChatBox = (
             outLinkUid,
             userGoodFeedback: isGoodFeedback ? undefined : 'yes'
           });
-        } catch (error) {}
+        } catch (error) { }
       };
     },
     [appId, chatId, feedbackType, outLinkUid, setChatHistories, shareId, teamId, teamToken]
@@ -749,7 +750,7 @@ const ChatBox = (
               teamToken,
               outLinkUid
             });
-          } catch (error) {}
+          } catch (error) { }
         };
       } else {
         return () => setFeedbackId(chat.dataId);
@@ -785,9 +786,9 @@ const ChatBox = (
             state.map((chatItem) =>
               chatItem.obj === ChatRoleEnum.AI && chatItem.dataId === chat.dataId
                 ? {
-                    ...chatItem,
-                    customFeedbacks: chatItem.customFeedbacks?.filter((_, index) => index !== i)
-                  }
+                  ...chatItem,
+                  customFeedbacks: chatItem.customFeedbacks?.filter((_, index) => index !== i)
+                }
                 : chatItem
             )
           );
@@ -899,7 +900,10 @@ const ChatBox = (
       {/* chat box container */}
       <Box ref={ChatBoxRef} flex={'1 0 0'} h={0} w={'100%'} overflow={'overlay'} px={[4, 0]} pb={3}>
         <Box id="chat-container" maxW={['100%', '92%']} h={'100%'} mx={'auto'}>
-          {showEmpty && <Empty />}
+          {/* {showEmpty &&
+            <Empty
+              teamId={teamId}
+            />} */}
           {!!welcomeText && <WelcomeBox appAvatar={appAvatar} welcomeText={welcomeText} />}
           {/* variable input */}
           {!!filterVariableNodes?.length && (
@@ -1049,7 +1053,7 @@ const ChatBox = (
                 chatId,
                 chatItemId: readFeedbackData.chatItemId
               });
-            } catch (error) {}
+            } catch (error) { }
             setReadFeedbackData(undefined);
           }}
         />
@@ -1074,9 +1078,9 @@ const ChatBox = (
               state.map((chatItem) =>
                 chatItem.dataId === adminMarkData.chatItemId
                   ? {
-                      ...chatItem,
-                      adminFeedback
-                    }
+                    ...chatItem,
+                    adminFeedback
+                  }
                   : chatItem
               )
             );

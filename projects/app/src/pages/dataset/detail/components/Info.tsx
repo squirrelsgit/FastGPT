@@ -236,7 +236,7 @@ const Info = ({ datasetId }: { datasetId: string }) => {
       </Flex>
       {datasetDetail.isOwner && (
         <Flex mt={5} alignItems={'center'} w={'100%'} flexWrap={'wrap'}>
-          <Box fontSize={['sm', 'md']} flex={['0 0 90px', '0 0 160px']} w={0}>
+          {/* <Box fontSize={['sm', 'md']} flex={['0 0 90px', '0 0 160px']} w={0}>
             {t('user.Permission')}
           </Box>
           <Box>
@@ -246,7 +246,7 @@ const Info = ({ datasetId }: { datasetId: string }) => {
                 setValue('permission', e);
               }}
             />
-          </Box>
+          </Box> */}
         </Flex>
       )}
 

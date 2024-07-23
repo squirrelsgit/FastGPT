@@ -248,7 +248,7 @@ const Dataset = () => {
                   parentId: dragTargetId
                 });
                 refetch();
-              } catch (error) {}
+              } catch (error) { }
               setDragTargetId(undefined);
             }}
             _hover={{
@@ -337,54 +337,54 @@ const Dataset = () => {
                       ),
                       onClick: () => setMoveDataId(dataset._id)
                     },
-                    {
-                      label: (
-                        <Flex alignItems={'center'}>
-                          <MyIcon name={'export'} w={'14px'} mr={2} />
-                          {t('Export')}
-                        </Flex>
-                      ),
-                      onClick: () => {
-                        exportDataset(dataset);
-                      }
-                    },
-                    ...(dataset.permission === PermissionTypeEnum.private
-                      ? [
-                          {
-                            label: (
-                              <Flex alignItems={'center'}>
-                                <MyIcon name={'support/permission/publicLight'} w={'14px'} mr={2} />
-                                {t('permission.Set Public')}
-                              </Flex>
-                            ),
-                            onClick: () => {
-                              putDatasetById({
-                                id: dataset._id,
-                                permission: PermissionTypeEnum.public
-                              });
-                            }
-                          }
-                        ]
-                      : [
-                          {
-                            label: (
-                              <Flex alignItems={'center'}>
-                                <MyIcon
-                                  name={'support/permission/privateLight'}
-                                  w={'14px'}
-                                  mr={2}
-                                />
-                                {t('permission.Set Private')}
-                              </Flex>
-                            ),
-                            onClick: () => {
-                              putDatasetById({
-                                id: dataset._id,
-                                permission: PermissionTypeEnum.private
-                              });
-                            }
-                          }
-                        ]),
+                    // {
+                    //   label: (
+                    //     <Flex alignItems={'center'}>
+                    //       <MyIcon name={'export'} w={'14px'} mr={2} />
+                    //       {t('Export')}
+                    //     </Flex>
+                    //   ),
+                    //   onClick: () => {
+                    //     exportDataset(dataset);
+                    //   }
+                    // },
+                    // ...(dataset.permission === PermissionTypeEnum.private
+                    //   ? [
+                    //       {
+                    //         label: (
+                    //           <Flex alignItems={'center'}>
+                    //             <MyIcon name={'support/permission/publicLight'} w={'14px'} mr={2} />
+                    //             {t('permission.Set Public')}
+                    //           </Flex>
+                    //         ),
+                    //         onClick: () => {
+                    //           putDatasetById({
+                    //             id: dataset._id,
+                    //             permission: PermissionTypeEnum.public
+                    //           });
+                    //         }
+                    //       }
+                    //     ]
+                    //   : [
+                    //       {
+                    //         label: (
+                    //           <Flex alignItems={'center'}>
+                    //             <MyIcon
+                    //               name={'support/permission/privateLight'}
+                    //               w={'14px'}
+                    //               mr={2}
+                    //             />
+                    //             {t('permission.Set Private')}
+                    //           </Flex>
+                    //         ),
+                    //         onClick: () => {
+                    //           putDatasetById({
+                    //             id: dataset._id,
+                    //             permission: PermissionTypeEnum.private
+                    //           });
+                    //         }
+                    //       }
+                    //     ]),
                     {
                       label: (
                         <Flex alignItems={'center'}>

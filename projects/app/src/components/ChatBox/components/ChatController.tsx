@@ -143,7 +143,7 @@ const ChatController = ({
           }
           return (
             <MyTooltip label={t('core.app.TTS start')}>
-              <MyIcon
+              {/* <MyIcon
                 {...controlIconStyle}
                 name={'common/voiceLight'}
                 _hover={{ color: '#E74694' }}
@@ -166,11 +166,11 @@ const ChatController = ({
                     )
                   );
                 }}
-              />
+              /> */}
             </MyTooltip>
           );
         })()}
-      {!!onMark && (
+      {/* {!!onMark && (
         <MyTooltip label={t('core.chat.Mark')}>
           <MyIcon
             {...controlIconStyle}
@@ -179,10 +179,10 @@ const ChatController = ({
             onClick={onMark}
           />
         </MyTooltip>
-      )}
+      )} */}
       {chat.obj === ChatRoleEnum.AI && (
         <>
-          {!!onCloseUserLike && chat.userGoodFeedback && (
+          {/* {!!onCloseUserLike && chat.userGoodFeedback && (
             <MyTooltip label={t('core.chat.feedback.Close User Like')}>
               <MyIcon
                 {...controlIconStyle}
@@ -193,8 +193,8 @@ const ChatController = ({
                 onClick={onCloseUserLike}
               />
             </MyTooltip>
-          )}
-          {!!onReadUserDislike && chat.userBadFeedback && (
+          )} */}
+          {/* {!!onReadUserDislike && chat.userBadFeedback && (
             <MyTooltip label={t('core.chat.feedback.Read User dislike')}>
               <MyIcon
                 {...controlIconStyle}
@@ -205,40 +205,40 @@ const ChatController = ({
                 onClick={onReadUserDislike}
               />
             </MyTooltip>
-          )}
-          {!!onAddUserLike && (
+          )} */}
+          {/* {!!onAddUserLike && (
             <MyIcon
               {...controlIconStyle}
               {...(!!chat.userGoodFeedback
                 ? {
-                    color: 'white',
-                    bg: 'green.500',
-                    fontWeight: 'bold'
-                  }
+                  color: 'white',
+                  bg: 'green.500',
+                  fontWeight: 'bold'
+                }
                 : {
-                    _hover: { color: 'green.600' }
-                  })}
+                  _hover: { color: 'green.600' }
+                })}
               name={'core/chat/feedback/goodLight'}
               onClick={onAddUserLike}
             />
-          )}
-          {!!onAddUserDislike && (
+          )} */}
+          {/* {!!onAddUserDislike && (
             <MyIcon
               {...controlIconStyle}
               {...(!!chat.userBadFeedback
                 ? {
-                    color: 'white',
-                    bg: '#FC9663',
-                    fontWeight: 'bold',
-                    onClick: onAddUserDislike
-                  }
+                  color: 'white',
+                  bg: '#FC9663',
+                  fontWeight: 'bold',
+                  onClick: onAddUserDislike
+                }
                 : {
-                    _hover: { color: '#FB7C3C' },
-                    onClick: onAddUserDislike
-                  })}
+                  _hover: { color: '#FB7C3C' },
+                  onClick: onAddUserDislike
+                })}
               name={'core/chat/feedback/badLight'}
             />
-          )}
+          )} */}
         </>
       )}
     </Flex>

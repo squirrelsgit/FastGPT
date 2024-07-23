@@ -44,41 +44,41 @@ const Account = ({ currentTab }: { currentTab: `${TabEnum}` }) => {
     },
     ...(feConfigs?.isPlus
       ? [
-          {
-            icon: 'support/usage/usageRecordLight',
-            label: t('user.Usage Record'),
-            id: TabEnum.usage
-          }
-        ]
+        {
+          icon: 'support/usage/usageRecordLight',
+          label: t('user.Usage Record'),
+          id: TabEnum.usage
+        }
+      ]
       : []),
     ...(feConfigs?.show_pay && userInfo?.team.canWrite
       ? [
-          {
-            icon: 'support/bill/payRecordLight',
-            label: t('support.wallet.Bills'),
-            id: TabEnum.bill
-          }
-        ]
+        {
+          icon: 'support/bill/payRecordLight',
+          label: t('support.wallet.Bills'),
+          id: TabEnum.bill
+        }
+      ]
       : []),
 
     ...(feConfigs?.show_promotion
       ? [
-          {
-            icon: 'support/account/promotionLight',
-            label: t('user.Promotion Record'),
-            id: TabEnum.promotion
-          }
-        ]
+        {
+          icon: 'support/account/promotionLight',
+          label: t('user.Promotion Record'),
+          id: TabEnum.promotion
+        }
+      ]
       : []),
-    ...(userInfo?.team.canWrite
-      ? [
-          {
-            icon: 'support/outlink/apikeyLight',
-            label: t('user.apikey.key'),
-            id: TabEnum.apikey
-          }
-        ]
-      : []),
+    // ...(userInfo?.team.canWrite
+    //   ? [
+    //       {
+    //         icon: 'support/outlink/apikeyLight',
+    //         label: t('user.apikey.key'),
+    //         id: TabEnum.apikey
+    //       }
+    //     ]
+    //   : []),
     {
       icon: 'support/user/individuation',
       label: t('support.account.Individuation'),
@@ -86,12 +86,12 @@ const Account = ({ currentTab }: { currentTab: `${TabEnum}` }) => {
     },
     ...(feConfigs.isPlus
       ? [
-          {
-            icon: 'support/user/informLight',
-            label: t('user.Notice'),
-            id: TabEnum.inform
-          }
-        ]
+        {
+          icon: 'support/user/informLight',
+          label: t('user.Notice'),
+          id: TabEnum.inform
+        }
+      ]
       : []),
 
     {

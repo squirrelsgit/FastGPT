@@ -146,7 +146,7 @@ const ChatTest = (
             chatConfig={appDetail.chatConfig}
             showFileSelector={checkChatSupportSelectFileByModules(nodes)}
             onStartChat={startChat}
-            onDelMessage={() => {}}
+            onDelMessage={() => { }}
           />
         </Box>
       </Flex>

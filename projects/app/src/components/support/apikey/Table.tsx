@@ -279,7 +279,7 @@ const ApiKeyTable = ({ tips, appId }: { tips: string; appId?: string }) => {
           </Button>
         </ModalFooter>
       </MyModal>
-    </Flex>
+    </Flex >
   );
 };
 

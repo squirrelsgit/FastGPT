@@ -83,7 +83,7 @@ const AppCard = ({ appId }: { appId: string }) => {
             <Box ml={3} fontWeight={'bold'} fontSize={'lg'}>
               {appDetail.name}
             </Box>
-            {appDetail.isOwner && (
+            {/* {appDetail.isOwner && (
               <IconButton
                 className="delete"
                 position={'absolute'}
@@ -97,7 +97,7 @@ const AppCard = ({ appId }: { appId: string }) => {
                 isLoading={isLoading}
                 onClick={openConfirmDel(handleDelModel)}
               />
-            )}
+            )} */}
           </Flex>
           <Box
             flex={1}
@@ -117,7 +117,7 @@ const AppCard = ({ appId }: { appId: string }) => {
             >
               {t('core.Chat')}
             </Button>
-            <Button
+            {/* <Button
               mx={3}
               size={['sm', 'md']}
               variant={'whitePrimary'}
@@ -132,8 +132,8 @@ const AppCard = ({ appId }: { appId: string }) => {
               }}
             >
               {t('core.app.navbar.Publish')}
-            </Button>
-            {appDetail.canWrite && feConfigs?.show_team_chat && (
+            </Button> */}
+            {/* {appDetail.canWrite && feConfigs?.show_team_chat && (
               <Button
                 mr={3}
                 size={['sm', 'md']}
@@ -153,7 +153,7 @@ const AppCard = ({ appId }: { appId: string }) => {
               >
                 {t('common.Setting')}
               </Button>
-            )}
+            )} */}
           </Flex>
         </Box>
       </Box>

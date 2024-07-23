@@ -106,7 +106,7 @@ const LoginForm = ({ setPageType, loginSuccess }: Props) => {
             })}
           ></Input>
         </FormControl>
-        {feConfigs?.docUrl && (
+        {/* {feConfigs?.docUrl && (
           <Flex alignItems={'center'} mt={7} fontSize={'sm'}>
             {t('support.user.login.Policy tip')}
             <Link
@@ -126,7 +126,7 @@ const LoginForm = ({ setPageType, loginSuccess }: Props) => {
               {t('support.user.login.Privacy')}
             </Link>
           </Flex>
-        )}
+        )} */}
 
         <Button
           type="submit"
@@ -140,13 +140,13 @@ const LoginForm = ({ setPageType, loginSuccess }: Props) => {
           {t('Login')}
         </Button>
 
-        {feConfigs?.show_register && (
+        {false && (
           <>
             <Flex align={'center'} justifyContent={'flex-end'} color={'primary.700'}>
               <Box
                 cursor={'pointer'}
                 _hover={{ textDecoration: 'underline' }}
-                onClick={() => setPageType('forgetPassword')}
+                onClick={() => setPageType('updatePswModal')}
                 fontSize="sm"
               >
                 {t('support.user.login.Forget Password')}

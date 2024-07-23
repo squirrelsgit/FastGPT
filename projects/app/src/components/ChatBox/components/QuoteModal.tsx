@@ -27,9 +27,9 @@ const QuoteModal = ({
     () =>
       metadata
         ? rawSearch.filter(
-            (item) =>
-              item.collectionId === metadata.collectionId && item.sourceId === metadata.sourceId
-          )
+          (item) =>
+            item.collectionId === metadata.collectionId && item.sourceId === metadata.sourceId
+        )
         : rawSearch,
     [metadata, rawSearch]
   );

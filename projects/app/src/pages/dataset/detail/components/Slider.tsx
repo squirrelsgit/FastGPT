@@ -40,10 +40,10 @@ const Slider = ({ currentTab }: { currentTab: TabEnum }) => {
       id: TabEnum.collectionCard,
       icon: 'common/overviewLight'
     },
-    { label: t('core.dataset.test.Search Test'), id: TabEnum.test, icon: 'kbTest' },
-    ...(userInfo?.team.canWrite && datasetDetail.isOwner
-      ? [{ label: t('common.Config'), id: TabEnum.info, icon: 'common/settingLight' }]
-      : [])
+    // { label: t('core.dataset.test.Search Test'), id: TabEnum.test, icon: 'kbTest' },
+    // ...(userInfo?.team.canWrite && datasetDetail.isOwner
+    //   ? [{ label: t('common.Config'), id: TabEnum.info, icon: 'common/settingLight' }]
+    //   : [])
   ];
 
   const setCurrentTab = useCallback(

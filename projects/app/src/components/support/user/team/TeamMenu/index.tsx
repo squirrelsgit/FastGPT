@@ -33,7 +33,7 @@ const TeamMenu = () => {
       }}
       transform={'none !important'}
       onClick={() => {
-        if (feConfigs.isPlus) {
+        if (true) {
           onOpen();
         } else {
           toast({

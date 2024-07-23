@@ -108,6 +108,20 @@
       "maxToken": 1800
     },
     {
+      "model": "bge",
+      "name": "bge",
+      "price": 0.1,
+      "defaultToken": 500,
+      "maxToken": 1800
+    },
+    {
+      "model": "bge1",
+      "name": "bge1",
+      "price": 0.1,
+      "defaultToken": 500,
+      "maxToken": 1800
+    },
+    {
       "model": "text-embedding-3-large",
       "name": "Embedding-3-large",
       "avatar": "/imgs/model/openai.svg",

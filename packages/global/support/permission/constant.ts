@@ -12,12 +12,12 @@ export enum PermissionTypeEnum {
 }
 export const PermissionTypeMap = {
   [PermissionTypeEnum.private]: {
-    iconLight: 'support/permission/privateLight',
-    label: 'permission.Private'
+    iconLight: '',//'support/permission/privateLight',
+    label: ''//'permission.Private'
   },
   [PermissionTypeEnum.public]: {
-    iconLight: 'support/permission/publicLight',
-    label: 'permission.Public'
+    iconLight: '',//'support/permission/publicLight',
+    label: '',//'permission.Public'
   }
 };
 
