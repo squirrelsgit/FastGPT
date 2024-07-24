@@ -166,7 +166,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           chatId
         });
       })();
-    debugger
+    //debugger
     // 1. get and concat history; 2. get app workflow
     const limit = getMaxHistoryLimitFromNodes(app.modules);
     const [{ history }, { nodes, edges, chatConfig }] = await Promise.all([
