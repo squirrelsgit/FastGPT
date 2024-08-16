@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, Flex, useDisclosure, useTheme } from '@chakra-ui/react';
+import { Box, Flex, useTheme } from '@chakra-ui/react';
 import { useSystemStore } from '@/web/common/system/useSystemStore';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -7,18 +7,20 @@ import { useUserStore } from '@/web/support/user/useUserStore';
 import { useConfirm } from '@fastgpt/web/hooks/useConfirm';
 import PageContainer from '@/components/PageContainer';
 import SideTabs from '@/components/SideTabs';
-import Tabs from '@/components/Tabs';
+import LightRowTabs from '@fastgpt/web/components/common/Tabs/LightRowTabs';
 import UserInfo from './components/Info';
 import { serviceSideProps } from '@/web/common/utils/i18n';
 import { useTranslation } from 'next-i18next';
 import Script from 'next/script';
-
+import { useSystem } from '@fastgpt/web/hooks/useSystem';
+import { clearToken } from '@/web/support/user/auth';
 const Promotion = dynamic(() => import('./components/Promotion'));
 const UsageTable = dynamic(() => import('./components/UsageTable'));
 const BillTable = dynamic(() => import('./components/BillTable'));
 const InformTable = dynamic(() => import('./components/InformTable'));
 const ApiKeyTable = dynamic(() => import('./components/ApiKeyTable'));
 const Individuation = dynamic(() => import('./components/Individuation'));
+const TeamAdmin = dynamic(() => import('./components/TeamAdmin'));
 
 enum TabEnum {
   'info' = 'info',
@@ -28,76 +30,86 @@ enum TabEnum {
   'inform' = 'inform',
   'individuation' = 'individuation',
   'apikey' = 'apikey',
+  'teamadmin' = 'teamadmin',
+  'useradmin' = 'useradmin',
   'loginout' = 'loginout'
 }
 
-const Account = ({ currentTab }: { currentTab: `${TabEnum}` }) => {
+const Account = ({ currentTab }: { currentTab: TabEnum }) => {
   const { t } = useTranslation();
   const { userInfo, setUserInfo } = useUserStore();
-  const { feConfigs, isPc, systemVersion } = useSystemStore();
-
+  const { feConfigs, systemVersion } = useSystemStore();
+  const { isPc } = useSystem();
   const tabList = [
     {
       icon: 'support/user/userLight',
-      label: t('user.Personal Information'),
-      id: TabEnum.info
+      label: t('common:user.Personal Information'),
+      value: TabEnum.info
     },
-    ...(feConfigs?.isPlus
+    ...(false
       ? [
         {
           icon: 'support/usage/usageRecordLight',
-          label: t('user.Usage Record'),
-          id: TabEnum.usage
+          label: t('common:user.Usage Record'),
+          value: TabEnum.usage
         }
       ]
       : []),
-    ...(feConfigs?.show_pay && userInfo?.team.canWrite
+    ...(false//feConfigs?.show_pay && userInfo?.team?.permission.hasWritePer
       ? [
         {
           icon: 'support/bill/payRecordLight',
-          label: t('support.wallet.Bills'),
-          id: TabEnum.bill
+          label: t('common:support.wallet.Bills'),
+          value: TabEnum.bill
         }
       ]
       : []),
 
-    ...(feConfigs?.show_promotion
+    ...(false//feConfigs?.show_promotion
       ? [
         {
           icon: 'support/account/promotionLight',
-          label: t('user.Promotion Record'),
-          id: TabEnum.promotion
+          label: t('common:user.Promotion Record'),
+          value: TabEnum.promotion
         }
       ]
       : []),
-    // ...(userInfo?.team.canWrite
-    //   ? [
-    //       {
-    //         icon: 'support/outlink/apikeyLight',
-    //         label: t('user.apikey.key'),
-    //         id: TabEnum.apikey
-    //       }
-    //     ]
-    //   : []),
+    ...(false//userInfo?.team?.permission.hasWritePer
+      ? [
+        {
+          icon: 'support/outlink/apikeyLight',
+          label: t('common:user.apikey.key'),
+          value: TabEnum.apikey
+        }
+      ]
+      : []),
     {
       icon: 'support/user/individuation',
-      label: t('support.account.Individuation'),
-      id: TabEnum.individuation
+      label: t('common:support.account.Individuation'),
+      value: TabEnum.individuation
     },
-    ...(feConfigs.isPlus
+    ...(false
       ? [
         {
           icon: 'support/user/informLight',
-          label: t('user.Notice'),
-          id: TabEnum.inform
+          label: t('common:user.Notice'),
+          value: TabEnum.inform
         }
       ]
       : []),
-
+    ...(userInfo?.username == "root"//userInfo?.team?.permission.hasWritePer
+      ? [
+        {
+          icon: 'support/user/teamadmin',
+          label: t('common:support.account.team_admin'),
+          value: TabEnum.teamadmin
+        }
+      ]
+      : []),
     {
       icon: 'support/account/loginoutLight',
-      label: t('user.Sign Out'),
-      id: TabEnum.loginout
+      label: t('common:user.Sign Out'),
+      value: TabEnum.loginout
     }
   ];
 
@@ -113,7 +125,9 @@ const Account = ({ currentTab }: { currentTab: `${TabEnum}` }) => {
       if (tab === TabEnum.loginout) {
         openConfirm(() => {
           setUserInfo(null);
-          router.replace('/login');
+          //router.replace('/login');
+          clearToken();
+          router.replace('http://171.151.11.83:30000');
         })();
       } else {
         router.replace({
@@ -139,38 +153,38 @@ const Account = ({ currentTab }: { currentTab: `${TabEnum}` }) => {
               flex={'0 0 200px'}
               borderRight={theme.borders.base}
             >
-              <SideTabs
+              <SideTabs<TabEnum>
                 flex={1}
                 mx={'auto'}
                 mt={2}
                 w={'100%'}
                 list={tabList}
-                activeId={currentTab}
+                value={currentTab}
                 onChange={setCurrentTab}
               />
               <Flex alignItems={'center'}>
                 <Box w={'8px'} h={'8px'} borderRadius={'50%'} bg={'#67c13b'} />
                 <Box fontSize={'md'} ml={2}>
-                  V{systemVersion}
+                  V 2.3
                 </Box>
               </Flex>
             </Flex>
           ) : (
             <Box mb={3}>
-              <Tabs
+              <LightRowTabs<TabEnum>
                 m={'auto'}
                 size={isPc ? 'md' : 'sm'}
                 list={tabList.map((item) => ({
-                  id: item.id,
+                  value: item.value,
                   label: item.label
                 }))}
-                activeId={currentTab}
+                value={currentTab}
                 onChange={setCurrentTab}
               />
             </Box>
           )}
 
-          <Box flex={'1 0 0'} h={'100%'} pb={[4, 0]}>
+          <Box flex={'1 0 0'} h={'100%'} pb={[4, 0]} overflow={'auto'}>
             {currentTab === TabEnum.info && <UserInfo />}
             {currentTab === TabEnum.promotion && <Promotion />}
             {currentTab === TabEnum.usage && <UsageTable />}
@@ -178,6 +192,7 @@ const Account = ({ currentTab }: { currentTab: `${TabEnum}` }) => {
             {currentTab === TabEnum.individuation && <Individuation />}
             {currentTab === TabEnum.inform && <InformTable />}
             {currentTab === TabEnum.apikey && <ApiKeyTable />}
+            {currentTab === TabEnum.teamadmin && <TeamAdmin />}
           </Box>
         </Flex>
         <ConfirmModal />

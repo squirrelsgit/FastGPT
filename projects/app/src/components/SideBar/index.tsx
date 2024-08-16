@@ -3,7 +3,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import type { BoxProps } from '@chakra-ui/react';
 import MyIcon from '@fastgpt/web/components/common/Icon';
 
-interface Props extends BoxProps {}
+interface Props extends BoxProps { }
 
 const SideBar = (e?: Props) => {
   const {
@@ -42,12 +42,12 @@ const SideBar = (e?: Props) => {
         transition={'0.2s'}
         {...(foldSideBar
           ? {
-              opacity: 0.6
-            }
+            opacity: 0.6
+          }
           : {
-              visibility: 'hidden',
-              opacity: 0
-            })}
+            visibility: 'hidden',
+            opacity: 0
+          })}
         onClick={() => setFoldSideBar(!foldSideBar)}
       >
         <MyIcon

@@ -3,7 +3,7 @@ import {
   FlowNodeOutputTypeEnum,
   FlowNodeTypeEnum
 } from '../../node/constant';
-import { FlowNodeTemplateType } from '../../type/index.d';
+import { FlowNodeTemplateType } from '../../type/node.d';
 import {
   WorkflowIOValueTypeEnum,
   NodeInputKeyEnum,
@@ -19,12 +19,12 @@ import { LLMModelTypeEnum } from '../../../ai/constants';
 import { getHandleConfig } from '../utils';
 
 export const AiQueryExtension: FlowNodeTemplateType = {
-  id: FlowNodeTypeEnum.chatNode,
+  id: FlowNodeTypeEnum.queryExtension,
   templateType: FlowNodeTemplateTypeEnum.other,
   flowNodeType: FlowNodeTypeEnum.queryExtension,
   sourceHandle: getHandleConfig(true, true, true, true),
   targetHandle: getHandleConfig(true, true, true, true),
-  avatar: '/imgs/workflow/cfr.svg',
+  avatar: 'core/workflow/template/queryExtension',
   name: '问题优化',
   intro:
     '使用问题优化功能，可以提高知识库连续对话时搜索的精度。使用该功能后，会先利用 AI 根据上下文构建一个或多个新的检索词，这些检索词更利于进行知识库搜索。该模块已内置在知识库搜索模块中，如果您仅进行一次知识库搜索，可直接使用知识库内置的补全功能。',

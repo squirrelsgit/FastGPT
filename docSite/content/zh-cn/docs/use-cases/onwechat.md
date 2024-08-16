@@ -11,11 +11,11 @@ weight: 504
 
 [chatgpt-on-wechat GitHub 地址](https://github.com/zhayujie/chatgpt-on-wechat)
 
-由于 FastGPT 的 API 接口和 OpenAI 的规范一致，可以无需变更原来的应用即可使用 FastGPT 上编排好的应用。API 使用可参考 [这篇文章](/docs/use-cases/openapi/)。编排示例，可参考 [高级编排介绍](/docs/workflow/intro)
+由于 FastGPT 的 API 接口和 OpenAI 的规范一致，可以无需变更原来的对话组即可使用 FastGPT 上编排好的对话组。API 使用可参考 [这篇文章](/docs/use-cases/openapi/)。编排示例，可参考 [高级编排介绍](/docs/workflow/intro)
 
 ## 1. 获取 OpenAPI 秘钥
 
-依次选择应用 -> 「API访问」，然后点击「API 密钥」来创建密钥。
+依次选择对话组 -> 「API访问」，然后点击「API 密钥」来创建密钥。
 
 {{% alert context="warning" %}}
 密钥需要自己保管好，一旦关闭就无法再复制密钥，只能创建新密钥再复制。

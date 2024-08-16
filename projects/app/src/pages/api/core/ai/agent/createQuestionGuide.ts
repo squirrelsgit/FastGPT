@@ -8,10 +8,8 @@ import { authChatCert } from '@/service/support/permission/auth/chat';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
-    debugger
     await connectToDatabase();
     const { messages } = req.body as CreateQuestionGuideParams;
-
     const { tmbId, teamId } = await authChatCert({
       req,
       authToken: true

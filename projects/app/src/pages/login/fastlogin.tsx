@@ -1,23 +1,22 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSystemStore } from '@/web/common/system/useSystemStore';
 import type { ResLogin } from '@/global/support/api/userRes.d';
-import { useChatStore } from '@/web/core/chat/storeChat';
+import { useChatStore } from '@/web/core/chat/context/storeChat';
 import { useUserStore } from '@/web/support/user/useUserStore';
 import { clearToken, setToken } from '@/web/support/user/auth';
 import { postFastLogin } from '@/web/support/user/api';
 import { useToast } from '@fastgpt/web/hooks/useToast';
 import Loading from '@fastgpt/web/components/common/MyLoading';
 import { serviceSideProps } from '@/web/common/utils/i18n';
-import { useQuery } from '@tanstack/react-query';
 import { getErrText } from '@fastgpt/global/common/error/utils';
+import { createJWT, setCookie } from '@fastgpt/service/support/permission/controller';
 
 const FastLogin = ({
-  code,
+  username,
   token,
   callbackUrl
 }: {
-  code: string;
+  username: string;
   token: string;
   callbackUrl: string;
 }) => {
@@ -25,16 +24,15 @@ const FastLogin = ({
   const { setUserInfo } = useUserStore();
   const router = useRouter();
   const { toast } = useToast();
-
+  //debugger
   const loginSuccess = useCallback(
     (res: ResLogin) => {
+      debugger
       setToken(res.token);
       setUserInfo(res.user);
-
       // init store
       setLastChatId('');
       setLastChatAppId('');
-
       setTimeout(() => {
         router.push(decodeURIComponent(callbackUrl));
       }, 100);
@@ -43,19 +41,20 @@ const FastLogin = ({
   );
 
   const authCode = useCallback(
-    async (code: string, token: string) => {
+    async (username: string, token: string) => {
       try {
         const res = await postFastLogin({
-          code,
+          username,
           token
         });
+        //debugger
         if (!res) {
           toast({
             status: 'warning',
             title: '登录异常'
           });
           return setTimeout(() => {
-            router.replace('/login');
+            router.replace('http://171.151.11.83:30000');
           }, 1000);
         }
         loginSuccess(res);
@@ -65,7 +64,7 @@ const FastLogin = ({
           title: getErrText(error, '登录异常')
         });
         setTimeout(() => {
-          router.replace('/login');
+          router.replace('http://171.151.11.83:30000');
         }, 1000);
       }
     },
@@ -73,9 +72,9 @@ const FastLogin = ({
   );
 
   useEffect(() => {
-    clearToken();
+    // clearToken();
     router.prefetch(callbackUrl);
-    authCode(code, token);
+    authCode(username, token);
   }, []);
 
   return <Loading />;
@@ -84,7 +83,7 @@ const FastLogin = ({
 export async function getServerSideProps(content: any) {
   return {
     props: {
-      code: content?.query?.code || '',
+      username: content?.query?.username || '',
       token: content?.query?.token || '',
       callbackUrl: content?.query?.callbackUrl || '/app/list',
       ...(await serviceSideProps(content))

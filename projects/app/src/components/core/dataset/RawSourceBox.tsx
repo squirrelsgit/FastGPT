@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
-import MyTooltip from '@/components/MyTooltip';
+import MyTooltip from '@fastgpt/web/components/common/MyTooltip';
 import { useTranslation } from 'next-i18next';
 import { getCollectionSourceAndOpen } from '@/web/core/dataset/hooks/readCollectionSource';
 import { getSourceNameIcon } from '@fastgpt/global/core/dataset/utils';
@@ -31,7 +31,7 @@ const RawSourceBox = ({
 
   return (
     <MyTooltip
-      label={canPreview ? fileT('Click to view raw source') : ''}
+      label={canPreview ? fileT('click_to_view_raw_source') : ''}
       shouldWrapChildren={false}
     >
       <Box
@@ -54,7 +54,7 @@ const RawSourceBox = ({
           className={props.className ?? 'textEllipsis'}
           wordBreak={'break-all'}
         >
-          {sourceName || t('common.UnKnow Source')}
+          {sourceName || t('common:common.UnKnow Source')}
         </Box>
       </Box>
     </MyTooltip>

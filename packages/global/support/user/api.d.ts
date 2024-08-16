@@ -19,5 +19,5 @@ export type WxLoginProps = {
 
 export type FastLoginProps = {
   token: string;
-  code: string;
+  username: string;
 };

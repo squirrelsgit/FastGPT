@@ -1,22 +1,17 @@
-import { Box, Button, Flex, IconButton } from '@chakra-ui/react';
-import Avatar from '@/components/Avatar';
+import { Box, Button, Flex, IconButton, Text } from '@chakra-ui/react';
+import Avatar from '@fastgpt/web/components/common/Avatar';
 import { useTranslation } from 'next-i18next';
 import MyIcon from '@fastgpt/web/components/common/Icon';
 import { TeamMemberRoleEnum } from '@fastgpt/global/support/user/team/constant';
-import EditModal, { defaultForm } from './EditModal';
+import { defaultForm } from './components/EditInfoModal';
 import { useUserStore } from '@/web/support/user/useUserStore';
 import { useContextSelector } from 'use-context-selector';
-import { TeamContext } from '.';
+import { TeamModalContext } from './context';
 
 function TeamList() {
   const { t } = useTranslation();
-  const { userInfo, initUserInfo } = useUserStore();
-  const editTeamData = useContextSelector(TeamContext, (v) => v.editTeamData);
-  const setEditTeamData = useContextSelector(TeamContext, (v) => v.setEditTeamData);
-  const myTeams = useContextSelector(TeamContext, (v) => v.myTeams);
-  const refetchTeam = useContextSelector(TeamContext, (v) => v.refetchTeam);
-  const onSwitchTeam = useContextSelector(TeamContext, (v) => v.onSwitchTeam);
-  // get the list of teams
+  const { userInfo } = useUserStore();
+  const { myTeams, onSwitchTeam, setEditTeamData } = useContextSelector(TeamModalContext, (v) => v);
 
   return (
     <Flex
@@ -33,11 +28,11 @@ function TeamList() {
         h={'40px'}
         borderBottom={'1.5px solid rgba(0, 0, 0, 0.05)'}
       >
-        <Box flex={['0 0 auto', 1]} fontWeight={'bold'} fontSize={['md', 'lg']}>
-          {t('common.Team')}
+        <Box flex={['0 0 auto', 1]} fontSize={['sm', 'md']}>
+          {t('common:common.Team')}
         </Box>
         {/* if there is no team */}
-        {myTeams.length < 1 && (
+        {false && (
           <IconButton
             variant={'ghost'}
             border={'none'}
@@ -50,7 +45,7 @@ function TeamList() {
               />
             }
             aria-label={''}
-            onClick={() => setEditTeamData(defaultForm)}
+            onClick={() => { setEditTeamData(defaultForm) }}
           />
         )}
       </Flex>
@@ -66,22 +61,23 @@ function TeamList() {
             gap={3}
             {...(userInfo?.team?.teamId === team.teamId
               ? {
-                  bg: 'primary.200'
-                }
+                bg: 'primary.200'
+              }
               : {
-                  _hover: {
-                    bg: 'myGray.100'
-                  }
-                })}
+                _hover: {
+                  bg: 'myGray.100'
+                }
+              })}
           >
             <Avatar src={team.avatar} w={['18px', '22px']} />
             <Box
               flex={'1 0 0'}
               w={0}
+              fontSize={'sm'}
               {...(team.role === TeamMemberRoleEnum.owner
                 ? {
-                    fontWeight: 'bold'
-                  }
+                  fontWeight: 'bold'
+                }
                 : {})}
             >
               {team.teamName}
@@ -94,22 +90,12 @@ function TeamList() {
                 variant={'whitePrimary'}
                 onClick={() => onSwitchTeam(team.teamId)}
               >
-                {t('user.team.Check Team')}
+                {t('common:user.team.Check Team')}
               </Button>
             )}
           </Flex>
         ))}
       </Box>
-      {!!editTeamData && (
-        <EditModal
-          defaultData={editTeamData}
-          onClose={() => setEditTeamData(undefined)}
-          onSuccess={() => {
-            refetchTeam();
-            initUserInfo();
-          }}
-        />
-      )}
     </Flex>
   );
 }

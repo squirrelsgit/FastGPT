@@ -1,12 +1,13 @@
 import {
+  AppChatConfigType,
   AppDetailType,
-  ChatInputGuideConfigType,
   AppSchema,
   AppSimpleEditFormType
 } from '@fastgpt/global/core/app/type';
-import { StoreNodeItemType } from '@fastgpt/global/core/workflow/type/index.d';
+import { StoreNodeItemType } from '@fastgpt/global/core/workflow/type/node.d';
 import {
   FlowNodeInputTypeEnum,
+  FlowNodeOutputTypeEnum,
   FlowNodeTypeEnum
 } from '@fastgpt/global/core/workflow/node/constant';
 import { NodeInputKeyEnum, WorkflowIOValueTypeEnum } from '@fastgpt/global/core/workflow/constants';
@@ -15,18 +16,28 @@ import { getNanoid } from '@fastgpt/global/common/string/tools';
 import { StoreEdgeItemType } from '@fastgpt/global/core/workflow/type/edge';
 import { EditorVariablePickerType } from '@fastgpt/web/components/common/Textarea/PromptEditor/type';
 import { TFunction } from 'next-i18next';
+import { ToolModule } from '@fastgpt/global/core/workflow/template/system/tools';
+import { useDatasetStore } from '../dataset/store/dataset';
 
 type WorkflowType = {
   nodes: StoreNodeItemType[];
   edges: StoreEdgeItemType[];
 };
-export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
+export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType & {
+  chatConfig: AppChatConfigType;
+} {
   const workflowStartNodeId = 'workflowStartNodeId';
+
+  const allDatasets = useDatasetStore.getState().allDatasets;
+  const selectedDatasets = data.dataset.datasets.filter((item) =>
+    allDatasets.some((ds) => ds._id === item.datasetId)
+  );
+
   function systemConfigTemplate(formData: AppSimpleEditFormType): StoreNodeItemType {
     return {
       nodeId: 'userGuide',
       name: '系统配置',
-      intro: '可以配置应用的系统参数',
+      intro: '可以配置对话组的系统参数',
       flowNodeType: FlowNodeTypeEnum.systemConfig,
       position: {
         x: 531.2422736065552,
@@ -65,7 +76,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
           key: 'userChatInput',
           label: 'core.module.input.label.user question',
           valueType: WorkflowIOValueTypeEnum.string,
-          type: 'static'
+          type: FlowNodeOutputTypeEnum.static
         }
       ]
     };
@@ -181,7 +192,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
               label: 'core.module.output.label.New context',
               description: 'core.module.output.description.New context',
               valueType: WorkflowIOValueTypeEnum.chatHistory,
-              type: 'static'
+              type: FlowNodeOutputTypeEnum.static
             },
             {
               id: 'answerText',
@@ -189,7 +200,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
               label: 'core.module.output.label.Ai response content',
               description: 'core.module.output.description.Ai response content',
               valueType: WorkflowIOValueTypeEnum.string,
-              type: 'static'
+              type: FlowNodeOutputTypeEnum.static
             }
           ]
         }
@@ -315,7 +326,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
               label: 'core.module.output.label.New context',
               description: 'core.module.output.description.New context',
               valueType: WorkflowIOValueTypeEnum.chatHistory,
-              type: 'static'
+              type: FlowNodeOutputTypeEnum.static
             },
             {
               id: 'answerText',
@@ -323,7 +334,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
               label: 'core.module.output.label.Ai response content',
               description: 'core.module.output.description.Ai response content',
               valueType: WorkflowIOValueTypeEnum.string,
-              type: 'static'
+              type: FlowNodeOutputTypeEnum.static
             }
           ]
         },
@@ -347,7 +358,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
                 FlowNodeInputTypeEnum.reference
               ],
               label: 'core.module.input.label.Select dataset',
-              value: formData.dataset.datasets,
+              value: selectedDatasets,
               valueType: WorkflowIOValueTypeEnum.selectDataset,
               list: [],
               required: true
@@ -416,7 +427,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
               id: 'quoteQA',
               key: 'quoteQA',
               label: 'core.module.Dataset quote.label',
-              type: 'static',
+              type: FlowNodeOutputTypeEnum.static,
               valueType: WorkflowIOValueTypeEnum.datasetQuote
             }
           ]
@@ -443,7 +454,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
     const datasetNodeId = getNanoid(6);
 
     const datasetTool: WorkflowType | null =
-      formData.dataset.datasets.length > 0
+      selectedDatasets.length > 0
         ? {
             nodes: [
               {
@@ -466,7 +477,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
                       FlowNodeInputTypeEnum.reference
                     ],
                     label: 'core.module.input.label.Select dataset',
-                    value: formData.dataset.datasets,
+                    value: selectedDatasets,
                     valueType: WorkflowIOValueTypeEnum.selectDataset,
                     list: [],
                     required: true
@@ -537,7 +548,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
                     id: 'quoteQA',
                     key: 'quoteQA',
                     label: 'core.module.Dataset quote.label',
-                    type: 'static',
+                    type: FlowNodeOutputTypeEnum.static,
                     valueType: WorkflowIOValueTypeEnum.datasetQuote
                   }
                 ]
@@ -591,7 +602,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
       nodes: [
         {
           nodeId: toolNodeId,
-          name: '工具调用（实验）',
+          name: '工具调用',
           intro: '通过AI模型自动选择一个或多个功能块进行调用，也可以对插件进行调用。',
           avatar: '/imgs/workflow/tool.svg',
           flowNodeType: FlowNodeTypeEnum.tools,
@@ -662,7 +673,7 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
               value: [workflowStartNodeId, 'userChatInput']
             }
           ],
-          outputs: []
+          outputs: ToolModule.outputs
         },
         // tool nodes
         ...(datasetTool ? datasetTool.nodes : []),
@@ -686,13 +697,14 @@ export function form2AppWorkflow(data: AppSimpleEditFormType): WorkflowType {
 
   const workflow = (() => {
     if (data.selectedTools.length > 0) return toolTemplates(data);
-    if (data.dataset.datasets.length > 0) return datasetTemplate(data);
+    if (selectedDatasets.length > 0) return datasetTemplate(data);
     return simpleChatTemplate(data);
   })();
 
   return {
     nodes: [systemConfigTemplate(data), workflowStartTemplate(), ...workflow.nodes],
-    edges: workflow.edges
+    edges: workflow.edges,
+    chatConfig: data.chatConfig
   };
 }
 
@@ -700,29 +712,29 @@ export const getSystemVariables = (t: TFunction): EditorVariablePickerType[] => 
   return [
     {
       key: 'appId',
-      label: t('core.module.http.AppId'),
+      label: t('common:core.module.http.AppId'),
       required: true,
       valueType: WorkflowIOValueTypeEnum.string
     },
     {
       key: 'chatId',
-      label: t('core.module.http.ChatId'),
+      label: t('common:core.module.http.ChatId'),
       valueType: WorkflowIOValueTypeEnum.string
     },
     {
       key: 'responseChatItemId',
-      label: t('core.module.http.ResponseChatItemId'),
+      label: t('common:core.module.http.ResponseChatItemId'),
       valueType: WorkflowIOValueTypeEnum.string
     },
     {
       key: 'histories',
-      label: t('core.module.http.Histories'),
+      label: t('common:core.module.http.Histories'),
       required: true,
       valueType: WorkflowIOValueTypeEnum.chatHistory
     },
     {
       key: 'cTime',
-      label: t('core.module.http.Current time'),
+      label: t('common:core.module.http.Current time'),
       required: true,
       valueType: WorkflowIOValueTypeEnum.string
     }

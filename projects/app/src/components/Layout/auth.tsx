@@ -13,7 +13,7 @@ const unAuthPage: { [key: string]: boolean } = {
   '/chat/share': true,
   '/chat/team': true,
   '/tools/price': true,
-  '/price': true
+  '/price': false
 };
 
 const Auth = ({ children }: { children: JSX.Element }) => {
@@ -39,7 +39,7 @@ const Auth = ({ children }: { children: JSX.Element }) => {
         );
         toast({
           status: 'warning',
-          title: t('support.user.Need to login')
+          title: t('common:support.user.Need to login')
         });
       }
     }

@@ -39,9 +39,9 @@ Sealos 的服务器在国外，不需要额外处理网络问题，无需服务�
 
 ### 修改配置文件和环境变量
 
-在 Sealos 中，你可以打开`应用管理`（App Launchpad）看到部署的 FastGPT，可以打开`数据库`（Database）看到对应的数据库。
+在 Sealos 中，你可以打开`对话组管理`（App Launchpad）看到部署的 FastGPT，可以打开`数据库`（Database）看到对应的数据库。
 
-在`应用管理`中，选中 FastGPT，点击变更，可以看到对应的环境变量和配置文件。
+在`对话组管理`中，选中 FastGPT，点击变更，可以看到对应的环境变量和配置文件。
 
 ![](/imgs/fastgptonsealos1.png)
 
@@ -57,11 +57,11 @@ Sealos 的服务器在国外，不需要额外处理网络问题，无需服务�
 
 ### 简介
 
-FastGPT 商业版共包含了2个应用（fastgpt, fastgpt-plus）和2个数据库，使用多 Api Key 时候需要安装 OneAPI（一个应用和一个数据库），总计3个应用和3个数据库。
+FastGPT 商业版共包含了2个对话组（fastgpt, fastgpt-plus）和2个数据库，使用多 Api Key 时候需要安装 OneAPI（一个对话组和一个数据库），总计3个对话组和3个数据库。
 
 ![](/imgs/onSealos1.png)
 
-点击右侧的详情，可以查看对应应用的详细信息。
+点击右侧的详情，可以查看对应对话组的详细信息。
 
 ### 如何更新/升级 FastGPT
 [升级脚本文档](https://doc.fastgpt.in/docs/development/upgrading/)先看下文档，看下需要升级哪个版本。注意，不要跨版本升级！！！！！
@@ -71,9 +71,9 @@ FastGPT 商业版共包含了2个应用（fastgpt, fastgpt-plus）和2个数据�
 升级步骤：
 
 1. 查看[更新文档](/docs/development/upgrading/intro/)，确认要升级的版本，避免跨版本升级。
-2. 打开 sealos 的应用管理
-3. 有2个应用 fastgpt ， fastgpt-pro
-4. 点击对应应用右边3个点，变更。或者点详情后右上角的变更。
+2. 打开 sealos 的对话组管理
+3. 有2个对话组 fastgpt ， fastgpt-pro
+4. 点击对应对话组右边3个点，变更。或者点详情后右上角的变更。
 5. 修改镜像的版本号
 
 ![](/imgs/onsealos2.png)
@@ -83,29 +83,29 @@ FastGPT 商业版共包含了2个应用（fastgpt, fastgpt-plus）和2个数据�
 
 ### 如何获取 FastGPT 访问链接
 
-打开对应的应用，点击外网访问地址。
+打开对应的对话组，点击外网访问地址。
 
 ![](/imgs/onsealos3.png)
 
 ### 配置自定义域名
 
-点击对应应用的变更->点击自定义域名->填写域名-> 操作域名 Cname -> 确认 -> 确认变。
+点击对应对话组的变更->点击自定义域名->填写域名-> 操作域名 Cname -> 确认 -> 确认变。
 
 ![](/imgs/onsealos4.png)
 
 ### 如何修改配置文件
 
-打开 Sealos 的应用管理 -> 找到对应的应用 -> 变更 -> 往下拉到高级配置，里面有个配置文件 -> 新增或点击对应的配置文件可以进行编辑 -> 点击右上角确认变。
+打开 Sealos 的对话组管理 -> 找到对应的对话组 -> 变更 -> 往下拉到高级配置，里面有个配置文件 -> 新增或点击对应的配置文件可以进行编辑 -> 点击右上角确认变。
 
 ![](/imgs/onsealos5.png)
 
 [配置文件参考](https://doc.fastgpt.in/docs/development/configuration/)
 
 ### 修改站点名称以及 favicon
-修改应用的环境变量，增加
+修改对话组的环境变量，增加
 
 ```
-SYSTEM_NAME=FastGPT
+SYSTEM_NAME=TiTanGPT
 SYSTEM_DESCRIPTION=
 SYSTEM_FAVICON=/favicon.ico
 HOME_URL=/app/list

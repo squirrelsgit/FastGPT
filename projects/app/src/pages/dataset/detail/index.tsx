@@ -45,7 +45,7 @@ const Detail = ({ datasetId, currentTab }: Props) => {
     onError(err: any) {
       router.replace(`/dataset/list`);
       toast({
-        title: t(getErrText(err, t('common.Load Failed'))),
+        title: t(getErrText(err, t('common:common.Load Failed')) as any),
         status: 'error'
       });
     }
@@ -59,7 +59,7 @@ const Detail = ({ datasetId, currentTab }: Props) => {
           <Slider currentTab={currentTab} />
 
           {!!datasetDetail._id && (
-            <Box flex={'1 0 0'} pb={0}>
+            <Box flex={'1 0 0'} pb={0} overflow={'auto'}>
               {currentTab === TabEnum.collectionCard && (
                 <CollectionPageContextProvider>
                   <CollectionCard />

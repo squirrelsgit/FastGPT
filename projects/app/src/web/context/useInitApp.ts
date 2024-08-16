@@ -18,22 +18,21 @@ export const useInitApp = () => {
 
   const initFetch = useMemoizedFn(async () => {
     const {
-      feConfigs: { scripts, isPlus, show_git, systemTitle }
+      feConfigs: { scripts, isPlus, systemTitle }
     } = await clientInitData();
 
     setTitle(systemTitle || 'TiTanGPT');
 
     // log fastgpt
-    if (!isPlus) {
+    if (false) {
       console.log(
-        '%cWelcome to FastGPT',
+        '%cWelcome to TiTanGPT',
         'font-family:Arial; color:#3370ff ; font-size:18px; font-weight:bold;',
-        `GitHub：https://github.com/labring/FastGPT`
+        //`GitHub：https://github.com/labring/FastGPT`
       );
     }
-    if (show_git) {
-      loadGitStar();
-    }
+
+    loadGitStar();
 
     setScripts(scripts || []);
     setInitd();

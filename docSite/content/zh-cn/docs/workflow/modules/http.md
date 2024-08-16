@@ -34,7 +34,7 @@ HTTP 模块会向对应的地址发送一个 `HTTP` 请求，实际操作与 Pos
 
 你可以将鼠标放置在`请求参数`旁边的问号中，里面会提示你可用的变量。
 
-- appId: 应用的ID
+- appId: 对话组的ID
 - chatId: 当前对话的ID，测试模式下不存在。
 - responseChatItemId: 当前对话中，响应的消息ID，测试模式下不存在。
 - variables: 当前对话的全局变量。

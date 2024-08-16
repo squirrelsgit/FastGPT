@@ -72,7 +72,7 @@ instance.interceptors.response.use(responseSuccess, (err) => Promise.reject(err)
 
 export function request(url: string, data: any, config: ConfigType, method: Method): any {
   if (!FastGPTProUrl) {
-    console.log('未部署商业版接口', url);
+    console.log('没有该接口', url);
     return Promise.reject('The The request was denied...');
   }
 

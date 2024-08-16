@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
-import Head from 'next/head';
+
 import Layout from '@/components/Layout';
 import { appWithTranslation } from 'next-i18next';
 
@@ -22,7 +22,7 @@ function App({ Component, pageProps }: AppProps) {
         desc={
           feConfigs?.systemDescription ||
           process.env.SYSTEM_DESCRIPTION ||
-          `${title} 是一个大模型应用编排系统，提供开箱即用的数据处理、模型调用等能力，可以快速的构建知识库并通过 Flow 可视化进行工作流编排，实现复杂的知识库场景！`
+          `${title} 是一个大模型对话组编排系统，提供开箱即用的数据处理、模型调用等能力，可以快速的构建知识库并通过 Flow 可视化进行工作流编排，实现复杂的知识库场景！`
         }
         icon={feConfigs?.favicon || process.env.SYSTEM_FAVICON}
       />

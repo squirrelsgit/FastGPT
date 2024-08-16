@@ -92,7 +92,7 @@ Response:
     {
       "nodeId": "userGuide",
       "name": "系统配置",
-      "intro": "可以配置应用的系统参数",
+      "intro": "可以配置对话组的系统参数",
       "avatar": "/imgs/workflow/userGuide.png",
       "flowNodeType": "userGuide",
       "position": {
@@ -272,7 +272,7 @@ Response:
             {
               "key": "Authorization",
               "type": "string",
-              "value": "Bearer sk-zsfBsxEU3ApSFGYxF4CdB97e9556412588421823371b9f7b"
+              "value": "Bearer "
             }
           ],
           "label": "",

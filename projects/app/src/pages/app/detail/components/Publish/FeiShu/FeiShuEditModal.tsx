@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { Flex, Box, Button, ModalFooter, ModalBody, Input } from '@chakra-ui/react';
 import MyModal from '@fastgpt/web/components/common/MyModal';
-import { QuestionOutlineIcon } from '@chakra-ui/icons';
-import MyTooltip from '@/components/MyTooltip';
+import MyTooltip from '@fastgpt/web/components/common/MyTooltip';
 import { PublishChannelEnum } from '@fastgpt/global/support/outLink/constant';
 import type { FeishuType, OutLinkEditType } from '@fastgpt/global/support/outLink/type';
 import { useTranslation } from 'next-i18next';
@@ -11,6 +10,7 @@ import { useRequest } from '@/web/common/hooks/useRequest';
 import dayjs from 'dayjs';
 import { createShareChat, updateShareChat } from '@/web/support/outLink/api';
 import { useI18n } from '@/web/context/I18n';
+import QuestionTip from '@fastgpt/web/components/common/MyTooltip/QuestionTip';
 
 const FeiShuEditModal = ({
   appId,
@@ -45,14 +45,14 @@ const FeiShuEditModal = ({
         type: PublishChannelEnum.feishu
       });
     },
-    errorToast: t('common.Create Failed'),
+    errorToast: t('common:common.Create Failed'),
     onSuccess: onCreate
   });
   const { mutate: onclickUpdate, isLoading: updating } = useRequest({
     mutationFn: (e: OutLinkEditType<FeishuType>) => {
       return updateShareChat(e);
     },
-    errorToast: t('common.Update Failed'),
+    errorToast: t('common:common.Update Failed'),
     onSuccess: onEdit
   });
 
@@ -60,25 +60,23 @@ const FeiShuEditModal = ({
     <MyModal
       isOpen={true}
       iconSrc="/imgs/modal/shareFill.svg"
-      title={isEdit ? publishT('Edit Link') : publishT('Create Link')}
+      title={isEdit ? publishT('edit_link') : publishT('create_link')}
     >
       <ModalBody>
         <Flex alignItems={'center'}>
-          <Box flex={'0 0 90px'}>{t('Name')}</Box>
+          <Box flex={'0 0 90px'}>{t('common:Name')}</Box>
           <Input
-            placeholder={publishT('Feishu name') || 'Link Name'} // TODO: i18n
+            placeholder={publishT('feishu_name') || 'link_name'} // TODO: i18n
             maxLength={20}
             {...register('name', {
-              required: t('common.Name is empty') || 'Name is empty'
+              required: t('common:common.name_is_empty') || 'name_is_empty'
             })}
           />
         </Flex>
         <Flex alignItems={'center'} mt={4}>
           <Flex flex={'0 0 90px'} alignItems={'center'}>
             QPM
-            <MyTooltip label={publishT('QPM Tips' || '')}>
-              <QuestionOutlineIcon ml={1} />
-            </MyTooltip>
+            <QuestionTip ml={1} label={publishT('qpm_tips' || '')}></QuestionTip>
           </Flex>
           <Input
             max={1000}
@@ -86,16 +84,17 @@ const FeiShuEditModal = ({
               min: 0,
               max: 1000,
               valueAsNumber: true,
-              required: publishT('QPM is empty') || ''
+              required: publishT('qpm_is_empty') || ''
             })}
           />
         </Flex>
         <Flex alignItems={'center'} mt={4}>
           <Flex flex={'0 0 90px'} alignItems={'center'}>
-            {t('support.outlink.Max usage points')}
-            <MyTooltip label={t('support.outlink.Max usage points tip')}>
-              <QuestionOutlineIcon ml={1} />
-            </MyTooltip>
+            {t('common:support.outlink.Max usage points')}
+            <QuestionTip
+              ml={1}
+              label={t('common:support.outlink.Max usage points tip')}
+            ></QuestionTip>
           </Flex>
           <Input
             {...register('limit.maxUsagePoints', {
@@ -108,7 +107,7 @@ const FeiShuEditModal = ({
         </Flex>
         <Flex alignItems={'center'} mt={4}>
           <Flex flex={'0 0 90px'} alignItems={'center'}>
-            {t('common.Expired Time')}
+            {t('common:common.Expired Time')}
           </Flex>
           <Input
             type="datetime-local"
@@ -128,7 +127,7 @@ const FeiShuEditModal = ({
             {/* TODO: i18n */}
           </Flex>
           <Input
-            placeholder={publishT('Default Response') || 'Link Name'}
+            placeholder={publishT('default_response') || 'link_name'}
             maxLength={20}
             {...register('defaultResponse', {
               required: true
@@ -141,7 +140,7 @@ const FeiShuEditModal = ({
             {/* TODO: i18n */}
           </Flex>
           <Input
-            placeholder={publishT('Default Response') || 'Link Name'}
+            placeholder={publishT('default_response') || 'link_name'}
             maxLength={20}
             {...register('immediateResponse', {
               required: true
@@ -149,9 +148,9 @@ const FeiShuEditModal = ({
           />
         </Flex>
         <Flex alignItems={'center'} mt={4}>
-          <Box flex={'0 0 90px'}>{t('core.module.http.AppId')}</Box>
+          <Box flex={'0 0 90px'}>{t('common:core.module.http.AppId')}</Box>
           <Input
-            placeholder={t('core.module.http.appId') || 'Link Name'}
+            placeholder={t('common:core.module.http.AppId') || 'link_name'}
             // maxLength={20}
             {...register('app.appId', {
               required: true
@@ -159,12 +158,12 @@ const FeiShuEditModal = ({
           />
         </Flex>
         <Flex alignItems={'center'} mt={4}>
-          <Box flex={'0 0 90px'}>{t('core.module.http.AppSecret')}</Box>
+          <Box flex={'0 0 90px'}>{t('common:core.module.http.AppSecret' as any)}</Box>
           <Input
             placeholder={'App Secret'}
             // maxLength={20}
             {...register('app.appSecret', {
-              required: t('common.Name is empty') || 'Name is empty'
+              required: t('common:common.name_is_empty') || 'name_is_empty'
             })}
           />
         </Flex>
@@ -174,7 +173,7 @@ const FeiShuEditModal = ({
             placeholder="Encrypt Key"
             // maxLength={20}
             {...register('app.encryptKey', {
-              required: t('common.Name is empty') || 'Name is empty'
+              required: t('common:common.name_is_empty') || 'name_is_empty'
             })}
           />
         </Flex>
@@ -184,7 +183,7 @@ const FeiShuEditModal = ({
             placeholder="Verification Token"
             // maxLength={20}
             {...register('app.verificationToken', {
-              required: t('common.Name is empty') || 'Name is empty'
+              required: t('common:common.name_is_empty') || 'name_is_empty'
             })}
           />
         </Flex>
@@ -197,13 +196,13 @@ const FeiShuEditModal = ({
       </ModalBody>
       <ModalFooter>
         <Button variant={'whiteBase'} mr={3} onClick={onClose}>
-          {t('common.Close')}
+          {t('common:common.Close')}
         </Button>
         <Button
           isLoading={creating || updating}
           onClick={submitShareChat((data) => (isEdit ? onclickUpdate(data) : onclickCreate(data)))}
         >
-          {t('common.Confirm')}
+          {t('common:common.Confirm')}
         </Button>
       </ModalFooter>
     </MyModal>

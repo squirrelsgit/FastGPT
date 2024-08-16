@@ -7,7 +7,7 @@ toc: true
 weight: 910
 ---
 
-[Xinference](https://github.com/xorbitsai/inference) 是一款开源模型推理平台，除了支持 LLM，它还可以部署 Embedding 和 ReRank 模型，这在企业级 RAG 构建中非常关键。同时，Xinference 还提供 Function Calling 等高级功能。还支持分布式部署，也就是说，随着未来应用调用量的增长，它可以进行水平扩展。
+[Xinference](https://github.com/xorbitsai/inference) 是一款开源模型推理平台，除了支持 LLM，它还可以部署 Embedding 和 ReRank 模型，这在企业级 RAG 构建中非常关键。同时，Xinference 还提供 Function Calling 等高级功能。还支持分布式部署，也就是说，随着未来对话组调用量的增长，它可以进行水平扩展。
 
 ## 安装 Xinference
 
@@ -173,12 +173,12 @@ curl --location --request POST 'https://<oneapi_url>/v1/chat/completions' \
 }
 ```
 
-然后重启 FastGPT 就可以在应用配置中选择 Qwen 模型进行对话：
+然后重启 FastGPT 就可以在对话组配置中选择 Qwen 模型进行对话：
 
 ![](/imgs/fastgpt-list-models.png)
 
 ---
 
-+ 参考：[FastGPT + Xinference：一站式本地 LLM 私有化部署和应用开发](https://xorbits.cn/blogs/fastgpt-weather-chat)
++ 参考：[FastGPT + Xinference：一站式本地 LLM 私有化部署和对话组开发](https://xorbits.cn/blogs/fastgpt-weather-chat)
 
 

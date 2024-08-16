@@ -26,6 +26,7 @@ import { useSystemStore } from '@/web/common/system/useSystemStore';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import MyMenu from '@fastgpt/web/components/common/MyMenu';
+import EmptyTip from '@fastgpt/web/components/common/EmptyTip';
 
 const FeiShuEditModal = dynamic(() => import('./FeiShuEditModal'));
 
@@ -47,8 +48,8 @@ const FeiShu = ({ appId }: { appId: string }) => {
   return (
     <Box position={'relative'} pt={3} px={5} minH={'50vh'}>
       <Flex justifyContent={'space-between'}>
-        <Box fontWeight={'bold'} fontSize={['md', 'xl']}>
-          {t('core.app.publish.Fei shu bot publish')}
+        <Box fontWeight={'bold'} fontSize={['md', 'lg']}>
+          {t('common:core.app.publish.Fei shu bot publish')}
         </Box>
         <Button
           variant={'whitePrimary'}
@@ -57,27 +58,27 @@ const FeiShu = ({ appId }: { appId: string }) => {
           {...(shareChatList.length >= 10
             ? {
                 isDisabled: true,
-                title: t('core.app.share.Amount limit tip')
+                title: t('common:core.app.share.Amount limit tip')
               }
             : {})}
           onClick={() => setEditFeiShuLinkData(defaultFeishuOutLinkForm)}
         >
-          {t('core.app.share.Create link')}
+          {t('common:core.app.share.Create link')}
         </Button>
       </Flex>
       <TableContainer mt={3}>
         <Table variant={'simple'} w={'100%'} overflowX={'auto'} fontSize={'sm'}>
           <Thead>
             <Tr>
-              <Th>{t('common.Name')}</Th>
-              <Th>{t('support.outlink.Usage points')}</Th>
-              {feConfigs?.isPlus && (
+              <Th>{t('common:common.Name')}</Th>
+              <Th>{t('common:support.outlink.Usage points')}</Th>
+              {true && (
                 <>
-                  <Th>{t('core.app.share.Ip limit title')}</Th>
-                  <Th>{t('common.Expired Time')}</Th>
+                  <Th>{t('common:core.app.share.Ip limit title')}</Th>
+                  <Th>{t('common:common.Expired Time')}</Th>
                 </>
               )}
-              <Th>{t('common.Last use time')}</Th>
+              <Th>{t('common:common.Last use time')}</Th>
               <Th></Th>
             </Tr>
           </Thead>
@@ -87,15 +88,15 @@ const FeiShu = ({ appId }: { appId: string }) => {
                 <Td>{item.name}</Td>
                 <Td>
                   {Math.round(item.usagePoints)}
-                  {feConfigs?.isPlus
+                  {true
                     ? `${
                         item.limit?.maxUsagePoints && item.limit.maxUsagePoints > -1
                           ? ` / ${item.limit.maxUsagePoints}`
-                          : ` / ${t('common.Unlimited')}`
+                          : ` / ${t('common:common.Unlimited')}`
                       }`
                     : ''}
                 </Td>
-                {feConfigs?.isPlus && (
+                {true && (
                   <>
                     <Td>{item?.limit?.QPM || '-'}</Td>
                     <Td>
@@ -106,7 +107,9 @@ const FeiShu = ({ appId }: { appId: string }) => {
                   </>
                 )}
                 <Td>
-                  {item.lastTime ? t(formatTimeToChatTime(item.lastTime)) : t('common.Un used')}
+                  {item.lastTime
+                    ? t(formatTimeToChatTime(item.lastTime) as any)
+                    : t('common:common.Un used')}
                 </Td>
                 <Td display={'flex'} alignItems={'center'}>
                   <MyMenu
@@ -122,32 +125,36 @@ const FeiShu = ({ appId }: { appId: string }) => {
                     }
                     menuList={[
                       {
-                        label: t('common.Edit'),
-                        icon: 'edit',
-                        onClick: () =>
-                          setEditFeiShuLinkData({
-                            _id: item._id,
-                            name: item.name,
-                            limit: item.limit,
-                            app: item.app,
-                            responseDetail: item.responseDetail,
-                            defaultResponse: item.defaultResponse,
-                            immediateResponse: item.immediateResponse
-                          })
-                      },
-                      {
-                        label: t('common.Delete'),
-                        icon: 'delete',
-                        onClick: async () => {
-                          setIsLoading(true);
-                          try {
-                            await delShareChatById(item._id);
-                            refetchShareChatList();
-                          } catch (error) {
-                            console.log(error);
+                        children: [
+                          {
+                            label: t('common:common.Edit'),
+                            icon: 'edit',
+                            onClick: () =>
+                              setEditFeiShuLinkData({
+                                _id: item._id,
+                                name: item.name,
+                                limit: item.limit,
+                                app: item.app,
+                                responseDetail: item.responseDetail,
+                                defaultResponse: item.defaultResponse,
+                                immediateResponse: item.immediateResponse
+                              })
+                          },
+                          {
+                            label: t('common:common.Delete'),
+                            icon: 'delete',
+                            onClick: async () => {
+                              setIsLoading(true);
+                              try {
+                                await delShareChatById(item._id);
+                                refetchShareChatList();
+                              } catch (error) {
+                                console.log(error);
+                              }
+                              setIsLoading(false);
+                            }
                           }
-                          setIsLoading(false);
-                        }
+                        ]
                       }
                     ]}
                   />
@@ -169,7 +176,7 @@ const FeiShu = ({ appId }: { appId: string }) => {
           onEdit={() => {
             toast({
               status: 'success',
-              title: t('common.Update Successful')
+              title: t('common:common.Update Successful')
             });
             refetchShareChatList();
             setEditFeiShuLinkData(undefined);
@@ -178,12 +185,7 @@ const FeiShu = ({ appId }: { appId: string }) => {
         />
       )}
       {shareChatList.length === 0 && !isFetching && (
-        <Flex h={'100%'} flexDirection={'column'} alignItems={'center'} pt={'10vh'}>
-          <MyIcon name="empty" w={'48px'} h={'48px'} color={'transparent'} />
-          <Box mt={2} color={'myGray.500'}>
-            {t('core.app.share.Not share link')}
-          </Box>
-        </Flex>
+        <EmptyTip text={t('common:core.app.share.Not share link')}></EmptyTip>
       )}
       <Loading loading={isFetching} fixed={false} />
     </Box>

@@ -7,8 +7,8 @@ interface Props extends TooltipProps {
 }
 
 const MyTooltip = ({ children, forceShow = false, shouldWrapChildren = true, ...props }: Props) => {
-  const { isPc } = useSystemStore();
-  return isPc || forceShow ? (
+  //const { isPc } = useSystemStore();
+  return true || forceShow ? (
     <Tooltip
       className="tooltip"
       bg={'white'}

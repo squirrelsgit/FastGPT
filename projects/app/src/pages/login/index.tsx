@@ -5,17 +5,17 @@ import { useSystemStore } from '@/web/common/system/useSystemStore';
 import type { ResLogin } from '@/global/support/api/userRes.d';
 import { useRouter } from 'next/router';
 import { useUserStore } from '@/web/support/user/useUserStore';
-import { useChatStore } from '@/web/core/chat/storeChat';
+import { useChatStore } from '@/web/core/chat/context/storeChat';
 import LoginForm from './components/LoginForm/LoginForm';
 import dynamic from 'next/dynamic';
 import { serviceSideProps } from '@/web/common/utils/i18n';
 import { clearToken, setToken } from '@/web/support/user/auth';
 import Script from 'next/script';
 import Loading from '@fastgpt/web/components/common/MyLoading';
+import { useMount } from 'ahooks';
 
 const RegisterForm = dynamic(() => import('./components/RegisterForm'));
 const ForgetPasswordForm = dynamic(() => import('./components/ForgetPasswordForm'));
-const UpdatePswModal = dynamic(() => import('../account/components/UpdatePswModal'));
 const WechatForm = dynamic(() => import('./components/LoginForm/WechatForm'));
 const CommunityModal = dynamic(() => import('@/components/CommunityModal'));
 
@@ -37,7 +37,7 @@ const Login = () => {
       setUserInfo(res.user);
       setToken(res.token);
       setTimeout(() => {
-        router.push(lastRoute ? decodeURIComponent(lastRoute) : '/chat');
+        router.push(lastRoute ? decodeURIComponent(lastRoute) : '/app/list');
       }, 300);
     },
     [lastRoute, router, setLastChatId, setLastChatAppId, setUserInfo]
@@ -48,7 +48,6 @@ const Login = () => {
       [LoginPageTypeEnum.passwordLogin]: LoginForm,
       [LoginPageTypeEnum.register]: RegisterForm,
       [LoginPageTypeEnum.forgetPassword]: ForgetPasswordForm,
-      [LoginPageTypeEnum.updatePswModal]: UpdatePswModal,
       [LoginPageTypeEnum.wechat]: WechatForm
     };
 
@@ -63,10 +62,11 @@ const Login = () => {
       feConfigs?.oauth?.wechat ? LoginPageTypeEnum.wechat : LoginPageTypeEnum.passwordLogin
     );
   }, [feConfigs.oauth]);
-  useEffect(() => {
+
+  useMount(() => {
     clearToken();
-    router.prefetch('/dataset/list');
-  }, []);
+    router.prefetch('/app/list');
+  });
 
   return (
     <>
@@ -107,7 +107,8 @@ const Login = () => {
               </Center>
             )}
           </Box>
-          {/* {feConfigs?.concatMd && (
+          {false//feConfigs?.concatMd 
+          && (
             <Box
               mt={8}
               color={'primary.700'}
@@ -117,7 +118,7 @@ const Login = () => {
             >
               无法登录，点击联系
             </Box>
-          )} */}
+          )}
         </Flex>
 
         {isOpen && <CommunityModal onClose={onClose} />}
@@ -128,7 +129,7 @@ const Login = () => {
 
 export async function getServerSideProps(context: any) {
   return {
-    props: { ...(await serviceSideProps(context)) }
+    props: { ...(await serviceSideProps(context, ['app'])) }
   };
 }
 

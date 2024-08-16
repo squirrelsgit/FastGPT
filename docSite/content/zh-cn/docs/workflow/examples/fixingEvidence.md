@@ -265,7 +265,7 @@ weight: 401
     {
       "nodeId": "q9equb",
       "name": "core.module.template.App system setting",
-      "intro": "可以配置应用的系统参数。",
+      "intro": "可以配置对话组的系统参数。",
       "avatar": "/imgs/workflow/userGuide.png",
       "flowNodeType": "userGuide",
       "position": {

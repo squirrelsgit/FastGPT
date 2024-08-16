@@ -1,15 +1,14 @@
 import { GET, POST, PUT, DELETE } from '@/web/common/api/request';
-import type { ParentTreePathItemType } from '@fastgpt/global/common/parentFolder/type.d';
+import type {
+  ParentIdType,
+  ParentTreePathItemType
+} from '@fastgpt/global/common/parentFolder/type.d';
 import type {
   DatasetItemType,
   DatasetListItemType,
   DatasetSimpleItemType
 } from '@fastgpt/global/core/dataset/type.d';
-import type {
-  GetDatasetCollectionsProps,
-  GetDatasetDataListProps,
-  UpdateDatasetCollectionParams
-} from '@/global/core/api/datasetReq.d';
+import type { GetDatasetCollectionsProps } from '@/global/core/api/datasetReq.d';
 import type {
   CreateDatasetCollectionParams,
   CsvTableCreateDatasetCollectionParams,
@@ -26,16 +25,9 @@ import type {
   SearchTestProps,
   SearchTestResponse
 } from '@/global/core/dataset/api.d';
-import type {
-  UpdateDatasetDataProps,
-  CreateDatasetParams,
-  InsertOneDatasetDataProps
-} from '@/global/core/dataset/api.d';
+import type { CreateDatasetParams, InsertOneDatasetDataProps } from '@/global/core/dataset/api.d';
 import type { DatasetCollectionItemType } from '@fastgpt/global/core/dataset/type';
-import {
-  DatasetCollectionSyncResultEnum,
-  DatasetTypeEnum
-} from '@fastgpt/global/core/dataset/constants';
+import { DatasetCollectionSyncResultEnum } from '@fastgpt/global/core/dataset/constants';
 import type { DatasetDataItemType } from '@fastgpt/global/core/dataset/type';
 import type { DatasetCollectionsListItemType } from '@/global/core/dataset/type.d';
 import { PagingData } from '@/types';
@@ -46,17 +38,22 @@ import type {
   PreviewChunksResponse
 } from '@/pages/api/core/dataset/file/getPreviewChunks';
 import type { readCollectionSourceResponse } from '@/pages/api/core/dataset/collection/read';
+import type { GetDatasetListBody } from '@/pages/api/core/dataset/list';
+import type { UpdateDatasetCollectionParams } from '@/pages/api/core/dataset/collection/update';
+import type { GetDatasetDataListProps } from '@/pages/api/core/dataset/data/list';
+import type { UpdateDatasetDataProps } from '@fastgpt/global/core/dataset/controller';
+import type { DatasetFolderCreateBody } from '@/pages/api/core/dataset/folder/create';
 
 /* ======================== dataset ======================= */
-export const getDatasets = (data: { parentId?: string; type?: DatasetTypeEnum }) =>
-  GET<DatasetListItemType[]>(`/core/dataset/list`, data);
+export const getDatasets = (data: GetDatasetListBody) =>
+  POST<DatasetListItemType[]>(`/core/dataset/list`, data);
 
 /**
  * get type=dataset list
  */
 export const getAllDataset = () => GET<DatasetSimpleItemType[]>(`/core/dataset/allDataset`);
 
-export const getDatasetPaths = (parentId?: string) =>
+export const getDatasetPaths = (parentId: ParentIdType) =>
   GET<ParentTreePathItemType[]>('/core/dataset/paths', { parentId });
 
 export const getDatasetById = (id: string) => GET<DatasetItemType>(`/core/dataset/detail?id=${id}`);
@@ -72,6 +69,12 @@ export const postWebsiteSync = (data: PostWebsiteSyncParams) =>
   POST(`/proApi/core/dataset/websiteSync`, data, {
     timeout: 600000
   }).catch();
+
+export const postCreateDatasetFolder = (data: DatasetFolderCreateBody) =>
+  POST(`/core/dataset/folder/create`, data);
+
+export const resumeInheritPer = (datasetId: string) =>
+  GET(`/core/dataset/resumeInheritPermission`, { datasetId });
 
 /* =========== search test ============ */
 export const postSearchText = (data: SearchTestProps) =>

@@ -15,27 +15,31 @@ const SystemMsgModal = ({}: {}) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data } = useQuery(['initSystemMsgModal', systemMsgReadId], getSystemMsgModalData, {
-    onSuccess(res) {
-      if (res?.content && (!systemMsgReadId || res.id !== systemMsgReadId)) {
-        onOpen();
-      }
-    }
-  });
+  // const { data } = useQuery(['initSystemMsgModal', systemMsgReadId], getSystemMsgModalData, {
+  //   onSuccess(res) {
+  //     if (res?.content && (!systemMsgReadId || res.id !== systemMsgReadId)) {
+  //       onOpen();
+  //     }
+  //   }
+  // });
 
-  const onclickRead = useCallback(() => {
-    if (!data) return;
-    setSysMsgReadId(data.id);
-    onClose();
-  }, [data, onClose, setSysMsgReadId]);
+  // const onclickRead = useCallback(() => {
+  //   if (!data) return;
+  //   setSysMsgReadId(data.id);
+  //   onClose();
+  // }, [data, onClose, setSysMsgReadId]);
 
   return (
-    <MyModal isOpen={isOpen} iconSrc={LOGO_ICON} title={t('support.user.inform.System message')}>
+    <MyModal
+      isOpen={isOpen}
+      iconSrc={LOGO_ICON}
+      title={t('common:support.user.inform.System message')}
+    >
       <ModalBody overflow={'auto'}>
-        <Markdown source={data?.content} />
+        {/* <Markdown source={data?.content} /> */}
       </ModalBody>
       <ModalFooter>
-        <Button onClick={onclickRead}>{t('support.inform.Read')}</Button>
+        {/* <Button onClick={onclickRead}>{t('support.inform.Read')}</Button> */}
       </ModalFooter>
     </MyModal>
   );

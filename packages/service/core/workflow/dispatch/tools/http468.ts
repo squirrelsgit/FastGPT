@@ -1,4 +1,4 @@
-import type { ModuleDispatchProps } from '@fastgpt/global/core/workflow/type/index.d';
+import type { ModuleDispatchProps } from '@fastgpt/global/core/workflow/runtime/type';
 import {
   NodeInputKeyEnum,
   NodeOutputKeyEnum,
@@ -16,6 +16,7 @@ import { DispatchNodeResultType } from '@fastgpt/global/core/workflow/runtime/ty
 import { getErrText } from '@fastgpt/global/common/error/utils';
 import { responseWrite } from '../../../../common/response';
 import { textAdaptGptResponse } from '@fastgpt/global/core/workflow/runtime/utils';
+import { getSystemPluginCb } from '../../../../../plugins/register';
 
 type PropsArrType = {
   key: string;
@@ -43,14 +44,13 @@ export const dispatchHttp468Request = async (props: HttpRequestProps): Promise<H
   let {
     res,
     detail,
-    appId,
+    app: { _id: appId },
     chatId,
     stream,
     responseChatItemId,
     variables,
     node: { outputs },
     histories,
-    isToolCall,
     params: {
       system_httpMethod: httpMethod = 'POST',
       system_httpReqUrl: httpReqUrl,
@@ -66,14 +66,17 @@ export const dispatchHttp468Request = async (props: HttpRequestProps): Promise<H
     return Promise.reject('Http url is empty');
   }
 
-  const concatVariables = {
+  const systemVariables = {
     appId,
     chatId,
     responseChatItemId,
+    histories: histories?.slice(-10) || []
+  };
+  const concatVariables = {
     ...variables,
-    histories: histories?.slice(-10) || [],
     ...body,
-    ...dynamicInput
+    // ...dynamicInput,
+    ...systemVariables
   };
 
   const allVariables = {
@@ -103,6 +106,7 @@ export const dispatchHttp468Request = async (props: HttpRequestProps): Promise<H
     acc[key] = valueTypeFormat(value, WorkflowIOValueTypeEnum.string);
     return acc;
   }, {});
+
   const requestBody = await (() => {
     if (!httpJsonBody) return {};
     try {
@@ -117,13 +121,23 @@ export const dispatchHttp468Request = async (props: HttpRequestProps): Promise<H
   })();
 
   try {
-    const { formatResponse, rawResponse } = await fetchData({
-      method: httpMethod,
-      url: httpReqUrl,
-      headers,
-      body: requestBody,
-      params
-    });
+    const { formatResponse, rawResponse } = await (async () => {
+      const systemPluginCb = await getSystemPluginCb();
+      if (systemPluginCb[httpReqUrl]) {
+        const pluginResult = await systemPluginCb[httpReqUrl](requestBody);
+        return {
+          formatResponse: pluginResult,
+          rawResponse: pluginResult
+        };
+      }
+      return fetchData({
+        method: httpMethod,
+        url: httpReqUrl,
+        headers,
+        body: requestBody,
+        params
+      });
+    })();
 
     // format output value type
     const results: Record<string, any> = {};
@@ -184,7 +198,7 @@ async function fetchData({
   headers: Record<string, any>;
   body: Record<string, any>;
   params: Record<string, any>;
-}): Promise<Record<string, any>> {
+}) {
   const { data: response } = await axios({
     method,
     baseURL: `http://${SERVICE_LOCAL_HOST}`,
@@ -279,14 +293,14 @@ async function fetchData({
 function replaceVariable(text: string, obj: Record<string, any>) {
   for (const [key, value] of Object.entries(obj)) {
     if (value === undefined) {
-      text = text.replace(new RegExp(`{{${key}}}`, 'g'), UNDEFINED_SIGN);
+      text = text.replace(new RegExp(`{{(${key})}}`, 'g'), UNDEFINED_SIGN);
     } else {
       const replacement = JSON.stringify(value);
       const unquotedReplacement =
         replacement.startsWith('"') && replacement.endsWith('"')
           ? replacement.slice(1, -1)
           : replacement;
-      text = text.replace(new RegExp(`{{${key}}}`, 'g'), unquotedReplacement);
+      text = text.replace(new RegExp(`{{(${key})}}`, 'g'), unquotedReplacement);
     }
   }
   return text || '';

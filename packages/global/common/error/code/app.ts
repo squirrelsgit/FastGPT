@@ -8,11 +8,11 @@ export enum AppErrEnum {
 const appErrList = [
   {
     statusText: AppErrEnum.unExist,
-    message: '应用不存在'
+    message: '对话组不存在'
   },
   {
     statusText: AppErrEnum.unAuthApp,
-    message: '无权操作该应用'
+    message: '无权操作该对话组'
   }
 ];
 export default appErrList.reduce((acc, cur, index) => {

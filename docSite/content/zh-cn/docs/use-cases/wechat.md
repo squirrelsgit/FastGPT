@@ -9,9 +9,9 @@ weight: 506
 
 # FastGPT 三分钟接入微信/企业微信
 私人微信和企业微信接入的方式基本一样，不同的地方会刻意指出。   
-[查看视频教程](https://www.bilibili.com/video/BV1cu411F7FN/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=903c2b09b7412037c2eddc6a8fb9828b)
+[查看视频教程](https://www.bilibili.com/video/BV1rJ4m1w7xk/)
 ## 创建APIKey
-首先找到我们需要接入的应用，然后点击「外部使用」->「API访问」创建一个APIKey并保存。
+首先找到我们需要接入的对话组，然后点击「外部使用」->「API访问」创建一个APIKey并保存。
 
 ![](/imgs/wechat1.png)
 
@@ -21,14 +21,14 @@ weight: 506
 
 ![](/imgs/wechat2.png)
 
-继续往下看到 `apikey` 和`服务器根地址`，这里`apikey`填写我们在 FastGPT 应用外部访问中创建的 APIkey，服务器根地址填写官方地址或者私有化部署的地址，这里用官方地址示例，注意要添加`/v1`后缀,填写完毕后保存。
+继续往下看到 `apikey` 和`服务器根地址`，这里`apikey`填写我们在 FastGPT 对话组外部访问中创建的 APIkey，服务器根地址填写官方地址或者私有化部署的地址，这里用官方地址示例，注意要添加`/v1`后缀,填写完毕后保存。
 
 ![](/imgs/wechat3.png)
 
 ## sealos部署服务
 
-[访问sealos](https://cloud.sealos.io/) 登陆进来之后打开「应用管理」-> 「新建应用」。
-- 应用名：称随便填写
+[访问sealos](https://cloud.sealos.run/) 登陆进来之后打开「对话组管理」-> 「新建对话组」。
+- 对话组名：称随便填写
 - 镜像名：私人微信填写 aibotk/wechat-assistant 企业微信填写 aibotk/worker-assistant
 - cpu和内存建议 1c1g
 
@@ -38,14 +38,14 @@ weight: 506
 
 ![](/imgs/wechat5.png)
 
-这里需要填写四个环境变量：   
+这里需要填写三个环境变量：   
 ```
 AIBOTK_KEY=微秘书 APIKEY   
 AIBOTK_SECRET=微秘书 APISECRET   
 WORK_PRO_TOKEN=你申请的企微 token   （企业微信需要填写，私人微信不需要）
 ```
 
-这里最后两个变量只有部署企业微信才需要，私人微信只需要填写前两个即可。
+这里最后的企业微信 Token 在微秘书的->会员开通栏目中自行购买。
 
 ![](/imgs/wechat6.png)
 
@@ -55,11 +55,9 @@ WORK_PRO_TOKEN=你申请的企微 token   （企业微信需要填写，私人�
 
 ![](/imgs/wechat7.png)
 
-`WORK_PRO_TOKEN` [点击这里](https://tss.rpachat.com/?aff=aibotk)申请 token 然后填入即可。   
+`WORK_PRO_TOKEN` 微秘书的会员中心中自行购买即可。
 
-`WECHATY_PUPPET_SERVICE_AUTHORITY`的值复制过去就可以。
-
-填写完毕后点右上角「部署」，等待应用状态变为运行中。  
+填写完毕后点右上角「部署」，等待对话组状态变为运行中。  
 
 ![](/imgs/wechat8.png)
 

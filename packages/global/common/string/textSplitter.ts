@@ -102,6 +102,8 @@ const commonSplit = (props: SplitProps): SplitResponse => {
   text = text.replace(/(```[\s\S]*?```|~~~[\s\S]*?~~~)/g, function (match) {
     return match.replace(/\n/g, codeBlockMarker);
   });
+  // replace invalid \n
+  text = text.replace(/(\r?\n|\r){3,}/g, '\n\n\n');
 
   // The larger maxLen is, the next sentence is less likely to trigger splitting
   const stepReges: { reg: RegExp; maxLen: number }[] = [
@@ -142,7 +144,7 @@ const commonSplit = (props: SplitProps): SplitResponse => {
       ];
     }
 
-    const isCustomSteep = checkIsCustomStep(step);
+    const isCustomStep = checkIsCustomStep(step);
     const isMarkdownSplit = checkIsMarkdownSplit(step);
     const independentChunk = checkIndependentChunk(step);
 
@@ -152,7 +154,7 @@ const commonSplit = (props: SplitProps): SplitResponse => {
       .replace(
         reg,
         (() => {
-          if (isCustomSteep) return splitMarker;
+          if (isCustomStep) return splitMarker;
           if (independentChunk) return `${splitMarker}$1`;
           return `$1${splitMarker}`;
         })()
@@ -338,7 +340,7 @@ const commonSplit = (props: SplitProps): SplitResponse => {
  */
 export const splitText2Chunks = (props: SplitProps): SplitResponse => {
   let { text = '' } = props;
-
+  const start = Date.now();
   const splitWithCustomSign = text.split(CUSTOM_SPLIT_SIGN);
 
   const splitResult = splitWithCustomSign.map((item) => {

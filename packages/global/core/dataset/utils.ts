@@ -24,13 +24,15 @@ export function getSourceNameIcon({
   sourceName: string;
   sourceId?: string;
 }) {
-  const fileIcon = getFileIcon(decodeURIComponent(sourceName), '');
-  if (fileIcon) {
-    return fileIcon;
-  }
-  if (strIsLink(sourceId)) {
-    return 'common/linkBlue';
-  }
+  try {
+    const fileIcon = getFileIcon(decodeURIComponent(sourceName.replace(/%/g, '%25')), '');
+    if (fileIcon) {
+      return fileIcon;
+    }
+    if (strIsLink(sourceId)) {
+      return 'common/linkBlue';
+    }
+  } catch (error) {}
 
   return 'file/fill/manual';
 }
@@ -48,6 +50,6 @@ export function getDefaultIndex(props?: { q?: string; a?: string; dataId?: strin
 
 export const predictDataLimitLength = (mode: TrainingModeEnum, data: any[]) => {
   if (mode === TrainingModeEnum.qa) return data.length * 20;
-  if (mode === TrainingModeEnum.auto) return data.length * 5;
+  if (mode === TrainingModeEnum.auto) return data.length * 5; //被注释
   return data.length;
 };

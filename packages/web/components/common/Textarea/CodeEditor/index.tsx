@@ -17,15 +17,15 @@ const CodeEditor = (props: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         iconSrc="modal/edit"
-        title={t('Code editor')}
+        title={t('common:code_editor')}
         w={'full'}
       >
         <ModalBody>
           <MyEditor {...props} bg={'myGray.50'} defaultHeight={600} />
         </ModalBody>
         <ModalFooter>
-          <Button mr={2} onClick={onClose}>
-            {t('common.Confirm')}
+          <Button mr={2} onClick={onClose} px={6}>
+            {t('common:common.Confirm')}
           </Button>
         </ModalFooter>
       </MyModal>

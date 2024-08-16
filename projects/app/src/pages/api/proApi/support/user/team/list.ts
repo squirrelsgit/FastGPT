@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const userInfo =await authJWT(token)
     const userId = userInfo.userId as string
     const resout = await findTeamById({userId});
-    debugger
+    //debugger
     jsonRes(res, {
       data: resout,
     });

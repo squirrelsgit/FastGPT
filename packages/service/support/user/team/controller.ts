@@ -1,4 +1,4 @@
-import { TeamItemType, TeamMemberItemType, TeamMemberWithTeamSchema } from '@fastgpt/global/support/user/team/type';
+import { TeamTmbItemType,TeamMemberItemType,TeamMemberSchema, TeamMemberWithTeamSchema, TeamSchema } from '@fastgpt/global/support/user/team/type';
 import { ClientSession, Types } from '../../../common/mongo';
 import {
   TeamMemberRoleEnum,
@@ -8,15 +8,24 @@ import {
 import { MongoTeamMember } from './teamMemberSchema';
 import { MongoTeam } from './teamSchema';
 import { UpdateTeamProps } from '@fastgpt/global/support/user/team/controller';
-import { LafAccountType } from '@fastgpt/global/support/user/team/type.d';
-import { PermissionValueType, ResourcePermissionType } from '@fastgpt/global/support/permission/type';
+import { getResourcePermission } from '../../permission/controller';
+import { PerResourceTypeEnum } from '@fastgpt/global/support/permission/constant';
+import { TeamPermission } from '@fastgpt/global/support/permission/user/controller';
+import { useUserStore } from '../../../../../projects/app/src/web/support/user/useUserStore';
+import { assign } from 'lodash';
 import { MongoUser } from '../schema';
 
-async function getTeamMember(match: Record<string, any>): Promise<TeamItemType> {
+async function getTeamMember(match: Record<string, any>): Promise<TeamTmbItemType> {
   const tmb = (await MongoTeamMember.findOne(match).populate('teamId')) as TeamMemberWithTeamSchema;
   if (!tmb) {
     return Promise.reject('member not exist');
   }
+
+  const tmbPer = await getResourcePermission({
+    resourceType: PerResourceTypeEnum.team,
+    teamId: tmb.teamId._id,
+    tmbId: tmb._id
+  });
 
   return {
     userId: String(tmb.userId),
@@ -30,9 +39,11 @@ async function getTeamMember(match: Record<string, any>): Promise<TeamItemType> 
     role: tmb.role,
     status: tmb.status,
     defaultTeam: tmb.defaultTeam,
-    canWrite: tmb.role !== TeamMemberRoleEnum.visitor,
     lafAccount: tmb.teamId.lafAccount,
-    defaultPermission: tmb.teamId.defaultPermission
+    permission: new TeamPermission({
+      per: tmbPer?.permission ?? tmb.teamId.defaultPermission,
+      isOwner: tmb.role === TeamMemberRoleEnum.owner
+    })
   };
 }
 
@@ -128,11 +139,56 @@ export async function updateTeam({
   });
 }
 
+export async function findMembersTeamId({
+  teamId,
+}: {
+  teamId: string;
+}): Promise<TeamMemberItemType[]> {
+  //debugger
+  const children = await MongoTeamMember.find({
+    teamId // 这里替换为你的实际 userId
+  }).lean();
+  //debugger
+  const teamMemberItemTypes : TeamMemberItemType[] = [];
+  // //debugger
+  for (const child of children) {
+    //debugger
+    const user = await MongoUser.findOne({
+      _id: child.userId,
+    })
+    const team = await MongoTeam.findOne({
+      _id: child.teamId,
+    })
+    const tmbPer = await getResourcePermission({
+      resourceType: PerResourceTypeEnum.team,
+      teamId: child?.teamId,
+      tmbId: child?._id??""
+    });
+    //const { userInfo, teamPlanStatus } = useUserStore();
+    const teamMemberItemType: TeamMemberItemType = {
+      userId: child.userId,
+      teamId: child?.teamId ?? "", // 使用空字符串作为默认值
+      memberName: child?.name ?? "", // 使用空字符串作为默认值
+      avatar: user?.avatar ?? "", // 使用空字符串作为默认值
+      tmbId: child?._id, // 假设这是根据你的逻辑来设置的
+      role: child.role,
+      status: child.status,
+      permission: new TeamPermission({
+        per: tmbPer?.permission ?? team?.defaultPermission,
+        isOwner: child?.role === TeamMemberRoleEnum.owner
+      }) // 使用默认权限或根据实际情况设置
+    }; 
+    teamMemberItemTypes.push(teamMemberItemType);
+  }
+
+  return teamMemberItemTypes;
+}
+
 export async function findTeamById({
   userId,
 }: {
   userId: string;
-}): Promise<TeamItemType[]> {
+}): Promise<TeamTmbItemType[]> {
   const children = await MongoTeamMember.aggregate([
     // 首先使用 $match 操作符根据 userId 过滤文档
     {
@@ -150,14 +206,14 @@ export async function findTeamById({
       }
     }
   ]);
-  const teamTmbItemTypes: TeamItemType[] = [];
-  debugger
+  const teamTmbItemTypes : TeamTmbItemType[] = [];
+  //debugger
   for (const child of children) {
-    debugger
+    //debugger
     const team = await MongoTeam.findOne({
       _id: child._id,
     })
-    const teamTmbItemType: TeamItemType = {
+    const teamTmbItemType: TeamTmbItemType = {
       userId: child.members[0].userId,
       teamId: team?._id ?? "", // 使用空字符串作为默认值
       teamName: team?.name ?? "", // 使用空字符串作为默认值
@@ -169,45 +225,32 @@ export async function findTeamById({
       defaultTeam: child.members[0].defaultTeam,
       role: child.members[0].role,
       status: child.members[0].status,
-      canWrite: true, // 使用默认权限或根据实际情况设置
-      lafAccount: child.members[0].LafAccountType,
-      defaultPermission: child.members[0].defaultPermission
-    };
+      permission: new TeamPermission() // 使用默认权限或根据实际情况设置
+    }; 
     teamTmbItemTypes.push(teamTmbItemType);
   }
 
   return teamTmbItemTypes;
 }
-export async function findMembersTeamId({
-  teamId,
-}: {
-  teamId: string;
-}): Promise<TeamMemberItemType[]> {
-  //debugger
-  const children = await MongoTeamMember.find({
-    teamId // 这里替换为你的实际 userId
-  }).lean();
-  //debugger
-  const teamMemberItemTypes: TeamMemberItemType[] = [];
-  // //debugger
-  for (const child of children) {
-    //debugger
-    const user = await MongoUser.findOne({
-      _id: child.userId,
-    })
-    //const { userInfo, teamPlanStatus } = useUserStore();
-    const teamMemberItemType: TeamMemberItemType = {
-      userId: child.userId,
-      teamId: child?.teamId ?? "", // 使用空字符串作为默认值
-      memberName: child?.name ?? "", // 使用空字符串作为默认值
-      avatar: user?.avatar ?? "", // 使用空字符串作为默认值
-      tmbId: "", // 假设这是根据你的逻辑来设置的
-      role: child.role,
-      status: child.status,
-      permission: 4 // 使用默认权限或根据实际情况设置
-    };
-    teamMemberItemTypes.push(teamMemberItemType);
-  }
 
-  return teamMemberItemTypes;
+export async function findTeamAll(): Promise<TeamMemberWithTeamSchema[]> {
+  const twsList : TeamMemberWithTeamSchema[] = [];
+  const teamLsit:TeamSchema[] = await MongoTeam.find({}).sort({ createTime: -1 })
+  //debugger
+  for(const team of teamLsit ){
+    const t:TeamMemberSchema|null = await MongoTeamMember.findOne({
+      teamId: team._id,
+      role: TeamMemberRoleEnum.owner,
+    }).lean();
+    if (t) { // 检查 t 是否为 null
+      const tws: TeamMemberWithTeamSchema = { ...t, teamId: team }; // 确保 teamId 是正确的类型
+      twsList.push(tws);
+    }else{
+      const tws: TeamMemberWithTeamSchema = {_id:"",userId:"",createTime:new Date(),name:"",role:"owner",status:"active",defaultTeam:true,  teamId: team }; // 确保 teamId 是正确的类型
+      twsList.push(tws);
+    }
+    // const tws: TeamMemberWithTeamSchema = {...t,teamId:team};
+    // twsList.push(tws)
+  }
+  return twsList;
 }

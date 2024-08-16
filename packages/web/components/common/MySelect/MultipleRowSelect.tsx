@@ -56,11 +56,18 @@ const MultipleRowSelect = ({
                 }}
                 onClick={() => {
                   const newValue = [...cloneValue];
-                  newValue[index] = item.value;
-                  setCloneValue(newValue);
-                  if (!hasChildren) {
+
+                  if (item.value === selectedValue) {
+                    newValue[index] = undefined;
+                    setCloneValue(newValue);
                     onSelect(newValue);
-                    onClose();
+                  } else {
+                    newValue[index] = item.value;
+                    setCloneValue(newValue);
+                    if (!hasChildren) {
+                      onSelect(newValue);
+                      onClose();
+                    }
                   }
                 }}
                 {...(item.value === selectedValue
@@ -73,7 +80,11 @@ const MultipleRowSelect = ({
               </Flex>
             ))}
             {list.length === 0 && (
-              <EmptyTip text={emptyTip ?? t('common.MultipleRowSelect.No data')} pt={1} pb={3} />
+              <EmptyTip
+                text={emptyTip ?? t('common:common.MultipleRowSelect.No data')}
+                pt={1}
+                pb={3}
+              />
             )}
           </Box>
           {children.length > 0 && <RenderList list={children} index={index + 1} />}

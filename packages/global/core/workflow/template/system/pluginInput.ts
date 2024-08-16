@@ -1,6 +1,6 @@
 import { FlowNodeTemplateTypeEnum } from '../../constants';
 import { FlowNodeTypeEnum } from '../../node/constant';
-import { FlowNodeTemplateType } from '../../type';
+import { FlowNodeTemplateType } from '../../type/node';
 import { getHandleConfig } from '../utils';
 
 export const PluginInputModule: FlowNodeTemplateType = {
@@ -11,9 +11,9 @@ export const PluginInputModule: FlowNodeTemplateType = {
   targetHandle: getHandleConfig(false, false, false, false),
   unique: true,
   forbidDelete: true,
-  avatar: '/imgs/workflow/input.png',
-  name: '自定义插件输入',
-  intro: '自定义配置外部输入，使用插件时，仅暴露自定义配置的输入',
+  avatar: 'core/workflow/template/workflowStart',
+  name: '插件输入',
+  intro: '可以配置插件需要哪些输入，利用这些输入来运行插件',
   showStatus: false,
   version: '481',
   inputs: [],

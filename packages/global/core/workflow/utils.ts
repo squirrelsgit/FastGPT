@@ -3,10 +3,11 @@ import {
   WorkflowIOValueTypeEnum,
   NodeInputKeyEnum,
   VariableInputEnum,
-  variableMap
+  variableMap,
+  VARIABLE_NODE_ID
 } from './constants';
-import { FlowNodeInputItemType, FlowNodeOutputItemType } from './type/io.d';
-import { StoreNodeItemType } from './type';
+import { FlowNodeInputItemType, FlowNodeOutputItemType, ReferenceValueProps } from './type/io.d';
+import { StoreNodeItemType } from './type/node';
 import type {
   VariableItemType,
   AppTTSConfigType,
@@ -22,6 +23,8 @@ import {
   defaultWhisperConfig
 } from '../app/constants';
 import { IfElseResultEnum } from './template/system/ifElse/constant';
+import { RuntimeNodeItemType } from './runtime/type';
+import { getReferenceVariableValue } from './runtime/utils';
 
 export const getHandleId = (nodeId: string, type: 'source' | 'target', key: string) => {
   return `${nodeId}-${type}-${key}`;
@@ -190,3 +193,125 @@ export const isReferenceValue = (value: any): boolean => {
 export const getElseIFLabel = (i: number) => {
   return i === 0 ? IfElseResultEnum.IF : `${IfElseResultEnum.ELSE_IF} ${i}`;
 };
+
+// add value to plugin input node when run plugin
+export const updatePluginInputByVariables = (
+  nodes: RuntimeNodeItemType[],
+  variables: Record<string, any>
+) => {
+  return nodes.map((node) =>
+    node.flowNodeType === FlowNodeTypeEnum.pluginInput
+      ? {
+          ...node,
+          inputs: node.inputs.map((input) => {
+            const parseValue = (() => {
+              try {
+                if (
+                  input.valueType === WorkflowIOValueTypeEnum.string ||
+                  input.valueType === WorkflowIOValueTypeEnum.number ||
+                  input.valueType === WorkflowIOValueTypeEnum.boolean
+                )
+                  return variables[input.key];
+
+                return JSON.parse(variables[input.key]);
+              } catch (e) {
+                return variables[input.key];
+              }
+            })();
+
+            return {
+              ...input,
+              value: parseValue ?? input.value
+            };
+          })
+        }
+      : node
+  );
+};
+
+export const removePluginInputVariables = (
+  variables: Record<string, any>,
+  nodes: RuntimeNodeItemType[]
+) => {
+  const pluginInputNode = nodes.find((node) => node.flowNodeType === FlowNodeTypeEnum.pluginInput);
+
+  if (!pluginInputNode) return variables;
+  return Object.keys(variables).reduce(
+    (acc, key) => {
+      if (!pluginInputNode.inputs.find((input) => input.key === key)) {
+        acc[key] = variables[key];
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+};
+
+export function replaceVariableLabel({
+  text,
+  nodes,
+  variables,
+  runningNode
+}: {
+  text: any;
+  nodes: RuntimeNodeItemType[];
+  variables: Record<string, string | number>;
+  runningNode: RuntimeNodeItemType;
+}) {
+  if (typeof text !== 'string') return text;
+
+  const globalVariables = Object.keys(variables).map((key) => {
+    return {
+      nodeId: VARIABLE_NODE_ID,
+      id: key,
+      value: variables[key]
+    };
+  });
+
+  // Upstream node outputs
+  const nodeVariables = nodes
+    .map((node) => {
+      return node.outputs.map((output) => {
+        return {
+          nodeId: node.nodeId,
+          id: output.id,
+          value: output.value
+        };
+      });
+    })
+    .flat();
+
+  // Get runningNode inputs(Will be replaced with reference)
+  const customInputs = runningNode.inputs.flatMap((item) => {
+    if (Array.isArray(item.value)) {
+      return [
+        {
+          id: item.key,
+          value: getReferenceVariableValue({
+            value: item.value as ReferenceValueProps,
+            nodes,
+            variables
+          }),
+          nodeId: runningNode.nodeId
+        }
+      ];
+    }
+    return [];
+  });
+
+  const allVariables = [...globalVariables, ...nodeVariables, ...customInputs];
+
+  // Replace {{$xxx.xxx$}} to value
+  for (const key in allVariables) {
+    const val = allVariables[key];
+    const regex = new RegExp(`\\{\\{\\$(${val.nodeId}\\.${val.id})\\$\\}\\}`, 'g');
+    if (['string', 'number'].includes(typeof val.value)) {
+      text = text.replace(regex, String(val.value));
+    } else if (['object'].includes(typeof val.value)) {
+      text = text.replace(regex, JSON.stringify(val.value));
+    } else {
+      continue;
+    }
+  }
+  return text || '';
+}

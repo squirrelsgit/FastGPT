@@ -30,11 +30,11 @@ FastGPT 升级包括两个步骤：
 
 ## Sealos 修改镜像
 
-1. 打开 [Sealos Cloud](https://cloud.sealos.io/)， 找到桌面上的应用管理
+1. 打开 [Sealos Cloud](https://cloud.sealos.io/)， 找到桌面上的对话组管理
    
 ![](/imgs/updateImageSealos1.jpg)
 
-2. 选择对应的应用 - 点击右边三个点 - 变更
+2. 选择对应的对话组 - 点击右边三个点 - 变更
 
 ![](/imgs/updateImageSealos2.png)
 

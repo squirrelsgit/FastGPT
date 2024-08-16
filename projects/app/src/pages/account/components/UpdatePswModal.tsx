@@ -5,17 +5,6 @@ import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 import { useRequest } from '@fastgpt/web/hooks/useRequest';
 import { updatePasswordByOld } from '@/web/support/user/api';
-import { useState, Dispatch, useCallback } from 'react';
-import { LoginPageTypeEnum } from '@/web/support/user/login/constants';
-import { postFindPassword } from '@/web/support/user/api';
-import { useSendCode } from '@/web/support/user/hooks/useSendCode';
-import type { ResLogin } from '@/global/support/api/userRes.d';
-import { useToast } from '@fastgpt/web/hooks/useToast';
-import { useSystemStore } from '@/web/common/system/useSystemStore';
-interface Props {
-  setPageType: Dispatch<`${LoginPageTypeEnum}`>;
-  loginSuccess: (e: ResLogin) => void;
-}
 
 type FormType = {
   oldPsw: string;
@@ -36,15 +25,15 @@ const UpdatePswModal = ({ onClose }: { onClose: () => void }) => {
   const { mutate: onSubmit, isLoading } = useRequest({
     mutationFn: (data: FormType) => {
       if (data.newPsw !== data.confirmPsw) {
-        return Promise.reject(t('common.Password inconsistency'));
+        return Promise.reject(t('common:common.Password inconsistency'));
       }
       return updatePasswordByOld(data);
     },
     onSuccess() {
       onClose();
     },
-    successToast: t('user.Update password successful'),
-    errorToast: t('user.Update password failed')
+    successToast: t('common:user.Update password successful'),
+    errorToast: t('common:user.Update password failed')
   });
 
   return (
@@ -52,7 +41,7 @@ const UpdatePswModal = ({ onClose }: { onClose: () => void }) => {
       isOpen
       onClose={onClose}
       iconSrc="/imgs/modal/password.svg"
-      title={t('user.Update Password')}
+      title={t('common:user.Update Password')}
     >
       <ModalBody>
         <Flex alignItems={'center'}>

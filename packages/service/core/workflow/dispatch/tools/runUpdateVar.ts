@@ -6,7 +6,7 @@ import {
 import { DispatchNodeResultType } from '@fastgpt/global/core/workflow/runtime/type';
 import { getReferenceVariableValue } from '@fastgpt/global/core/workflow/runtime/utils';
 import { TUpdateListItem } from '@fastgpt/global/core/workflow/template/system/variableUpdate/type';
-import { ModuleDispatchProps } from '@fastgpt/global/core/workflow/type';
+import { ModuleDispatchProps } from '@fastgpt/global/core/workflow/runtime/type';
 import { removeSystemVariable, valueTypeFormat } from '../utils';
 import { responseWrite } from '../../../../common/response';
 
@@ -16,7 +16,7 @@ type Props = ModuleDispatchProps<{
 type Response = DispatchNodeResultType<{}>;
 
 export const dispatchUpdateVariable = async (props: Props): Promise<Response> => {
-  const { res, detail, params, variables, runtimeNodes } = props;
+  const { res, detail, stream, params, variables, runtimeNodes } = props;
 
   const { updateList } = params;
   updateList.forEach((item) => {
@@ -54,7 +54,7 @@ export const dispatchUpdateVariable = async (props: Props): Promise<Response> =>
     }
   });
 
-  if (detail) {
+  if (detail && stream) {
     responseWrite({
       res,
       event: SseResponseEventEnum.updateVariables,

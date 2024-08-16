@@ -3,10 +3,78 @@ import { ERROR_ENUM } from '@fastgpt/global/common/error/errorCode';
 import jwt from 'jsonwebtoken';
 import { NextApiResponse } from 'next';
 import type { AuthModeType, ReqHeaderAuthType } from './type.d';
-import { AuthUserTypeEnum } from '@fastgpt/global/support/permission/constant';
+import { AuthUserTypeEnum, PerResourceTypeEnum } from '@fastgpt/global/support/permission/constant';
 import { authOpenApiKey } from '../openapi/auth';
 import { FileTokenQuery } from '@fastgpt/global/common/file/type';
+import { MongoResourcePermission } from './schema';
+import { ClientSession } from 'mongoose';
+import { ParentIdType } from '@fastgpt/global/common/parentFolder/type';
+import { ResourcePermissionType } from '@fastgpt/global/support/permission/type';
 
+export const getResourcePermission = async ({
+  resourceType,
+  teamId,
+  tmbId,
+  resourceId
+}: {
+  resourceType: PerResourceTypeEnum;
+  teamId: string;
+  tmbId: string;
+  resourceId?: string;
+}) => {
+  const per = await MongoResourcePermission.findOne({
+    tmbId,
+    teamId,
+    resourceType,
+    resourceId
+  });
+
+  if (!per) {
+    return null;
+  }
+  return per;
+};
+export async function getResourceAllClbs({
+  resourceId,
+  teamId,
+  resourceType,
+  session
+}: {
+  resourceId: ParentIdType;
+  teamId: string;
+  resourceType: PerResourceTypeEnum;
+  session?: ClientSession;
+}): Promise<ResourcePermissionType[]> {
+  if (!resourceId) return [];
+  return MongoResourcePermission.find(
+    {
+      resourceId,
+      resourceType: resourceType,
+      teamId: teamId
+    },
+    null,
+    {
+      session
+    }
+  ).lean();
+}
+export const delResourcePermissionById = (id: string) => {
+  return MongoResourcePermission.findByIdAndRemove(id);
+};
+export const delResourcePermission = ({
+  session,
+  ...props
+}: {
+  resourceType: PerResourceTypeEnum;
+  resourceId: string;
+  teamId: string;
+  tmbId: string;
+  session?: ClientSession;
+}) => {
+  return MongoResourcePermission.deleteOne(props, { session });
+};
+
+/* 下面代码等迁移 */
 /* create token */
 export function createJWT(user: { _id?: string; team?: { teamId?: string; tmbId: string } }) {
   const key = process.env.TOKEN_KEY as string;
@@ -30,7 +98,7 @@ export function authJWT(token: string) {
     tmbId: string;
   }>((resolve, reject) => {
     const key = process.env.TOKEN_KEY as string;
-
+    //debugger
     jwt.verify(token, key, function (err, decoded: any) {
       if (err || !decoded?.userId) {
         reject(ERROR_ENUM.unAuthorization);
@@ -53,15 +121,17 @@ export async function parseHeaderCert({
   authApiKey = false
 }: AuthModeType) {
   // parse jwt
+  //debugger
   async function authCookieToken(cookie?: string, token?: string) {
     // 获取 cookie
+    //debugger
     const cookies = Cookie.parse(cookie || '');
-    const cookieToken = token || cookies.token;
+    
+    const cookieToken = token || cookies[TokenName];
 
     if (!cookieToken) {
       return Promise.reject(ERROR_ENUM.unAuthorization);
     }
-
     return await authJWT(cookieToken);
   }
   // from authorization get apikey
@@ -169,12 +239,16 @@ export async function parseHeaderCert({
 }
 
 /* set cookie */
+export const TokenName = 'fastgpt_token';
 export const setCookie = (res: NextApiResponse, token: string) => {
-  res.setHeader('Set-Cookie', `token=${token}; Path=/; HttpOnly; Max-Age=604800; Samesite=Strict;`);
+  res.setHeader(
+    'Set-Cookie',
+    `${TokenName}=${token}; Path=/; HttpOnly; Max-Age=604800; Samesite=Strict;`
+  );
 };
 /* clear cookie */
 export const clearCookie = (res: NextApiResponse) => {
-  res.setHeader('Set-Cookie', 'token=; Path=/; Max-Age=0');
+  res.setHeader('Set-Cookie', `${TokenName}=; Path=/; Max-Age=0`);
 };
 
 /* file permission */

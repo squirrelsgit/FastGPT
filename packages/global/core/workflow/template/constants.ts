@@ -5,88 +5,66 @@ import { AiChatModule } from './system/aiChat';
 import { DatasetSearchModule } from './system/datasetSearch';
 import { DatasetConcatModule } from './system/datasetConcat';
 import { AssignedAnswerModule } from './system/assignedAnswer';
-import { ClassifyQuestionModule } from './system/classifyQuestion';
-import { ContextExtractModule } from './system/contextExtract';
-import { HttpModule468 } from './system/http468';
+import { ClassifyQuestionModule } from './system/classifyQuestion/index';
+import { ContextExtractModule } from './system/contextExtract/index';
+import { HttpNode468 } from './system/http468';
 
 import { ToolModule } from './system/tools';
 import { StopToolNode } from './system/stopTool';
 
-import { RunAppModule } from './system/runApp';
+import { RunAppModule } from './system/runApp/index';
 import { PluginInputModule } from './system/pluginInput';
 import { PluginOutputModule } from './system/pluginOutput';
 import { RunPluginModule } from './system/runPlugin';
 import { AiQueryExtension } from './system/queryExtension';
 
-import type { FlowNodeTemplateType } from '../type';
+import type { FlowNodeTemplateType } from '../type/node';
 import { LafModule } from './system/laf';
 import { IfElseNode } from './system/ifElse/index';
 import { VariableUpdateNode } from './system/variableUpdate';
 import { CodeNode } from './system/sandbox';
+import { TextEditorNode } from './system/textEditor';
+import { CustomFeedbackNode } from './system/customFeedback';
 
-/* app flow module templates */
-export const appSystemModuleTemplates: FlowNodeTemplateType[] = [
-  SystemConfigNode,
-  WorkflowStart,
+const systemNodes: FlowNodeTemplateType[] = [
   AiChatModule,
+  TextEditorNode,
   AssignedAnswerModule,
   DatasetSearchModule,
   DatasetConcatModule,
-  RunAppModule,
   ToolModule,
   StopToolNode,
   ClassifyQuestionModule,
   ContextExtractModule,
-  HttpModule468,
+  HttpNode468,
   AiQueryExtension,
   LafModule,
   IfElseNode,
   VariableUpdateNode,
-  CodeNode
+  CodeNode,
+  RunAppModule
+];
+/* app flow module templates */
+export const appSystemModuleTemplates: FlowNodeTemplateType[] = [
+  SystemConfigNode,
+  WorkflowStart,
+  ...systemNodes,
+  CustomFeedbackNode
 ];
 /* plugin flow module templates */
 export const pluginSystemModuleTemplates: FlowNodeTemplateType[] = [
   PluginInputModule,
   PluginOutputModule,
-  AiChatModule,
-  AssignedAnswerModule,
-  DatasetSearchModule,
-  DatasetConcatModule,
-  RunAppModule,
-  ToolModule,
-  StopToolNode,
-  ClassifyQuestionModule,
-  ContextExtractModule,
-  HttpModule468,
-  AiQueryExtension,
-  LafModule,
-  IfElseNode,
-  VariableUpdateNode,
-  CodeNode
+  ...systemNodes
 ];
 
 /* all module */
 export const moduleTemplatesFlat: FlowNodeTemplateType[] = [
+  ...appSystemModuleTemplates.concat(
+    pluginSystemModuleTemplates.filter(
+      (item) => !appSystemModuleTemplates.find((app) => app.id === item.id)
+    )
+  ),
   EmptyNode,
-  SystemConfigNode,
-  WorkflowStart,
-  AiChatModule,
-  DatasetSearchModule,
-  DatasetConcatModule,
-  AssignedAnswerModule,
-  ClassifyQuestionModule,
-  ContextExtractModule,
-  HttpModule468,
-  ToolModule,
-  StopToolNode,
-  AiChatModule,
-  RunAppModule,
-  PluginInputModule,
-  PluginOutputModule,
-  RunPluginModule,
-  AiQueryExtension,
-  LafModule,
-  IfElseNode,
-  VariableUpdateNode,
-  CodeNode
+  RunPluginModule
 ];

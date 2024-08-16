@@ -14,7 +14,7 @@ export const createTrainingUsage = async ({
   teamId: string;
   tmbId: string;
   appName: string;
-  billSource: `${UsageSourceEnum}`;
+  billSource: UsageSourceEnum;
   vectorModel: string;
   agentModel: string;
   session?: ClientSession;
@@ -40,12 +40,13 @@ export const createTrainingUsage = async ({
             tokens: 0,
             amount: 0
           },
-          {
-            moduleName: 'core.dataset.training.Auto mode',
-            model: agentModel,
-            tokens: 0,
-            amount: 0
-          }
+          // 被注释
+          // {
+          //   moduleName: 'core.dataset.training.Auto mode',
+          //   model: agentModel,
+          //   tokens: 0,
+          //   amount: 0
+          // }
         ]
       }
     ],

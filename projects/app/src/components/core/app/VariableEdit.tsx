@@ -22,7 +22,7 @@ import {
   TableContainer,
   useDisclosure
 } from '@chakra-ui/react';
-import { QuestionOutlineIcon, SmallAddIcon } from '@chakra-ui/icons';
+import { SmallAddIcon } from '@chakra-ui/icons';
 import { VariableInputEnum, variableMap } from '@fastgpt/global/core/workflow/constants';
 import type { VariableItemType } from '@fastgpt/global/core/app/type.d';
 import MyIcon from '@fastgpt/web/components/common/Icon';
@@ -31,12 +31,12 @@ import { useFieldArray } from 'react-hook-form';
 import { customAlphabet } from 'nanoid';
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);
 import MyModal from '@fastgpt/web/components/common/MyModal';
-import MyTooltip from '@/components/MyTooltip';
 import { useTranslation } from 'next-i18next';
 import { useToast } from '@fastgpt/web/hooks/useToast';
 import MyRadio from '@/components/common/MyRadio';
 import { formatEditorVariablePickerIcon } from '@fastgpt/global/core/workflow/utils';
 import ChatFunctionTip from './Tip';
+import FormLabel from '@fastgpt/web/components/common/MyBox/FormLabel';
 
 const VariableEdit = ({
   variables = [],
@@ -52,7 +52,7 @@ const VariableEdit = ({
   const VariableTypeList = useMemo(
     () =>
       Object.entries(variableMap).map(([key, value]) => ({
-        title: t(value.title),
+        title: t(value.title as any),
         icon: value.icon,
         value: key
       })),
@@ -96,9 +96,7 @@ const VariableEdit = ({
     <Box>
       <Flex alignItems={'center'}>
         <MyIcon name={'core/app/simpleMode/variable'} w={'20px'} />
-        <Box ml={2} fontWeight={'medium'}>
-          {t('core.module.Variable')}
-        </Box>
+        <FormLabel ml={2}>{t('common:core.module.Variable')}</FormLabel>
         <ChatFunctionTip type={'variable'} />
         <Box flex={1} />
         <Button
@@ -112,20 +110,25 @@ const VariableEdit = ({
             onOpenEdit();
           }}
         >
-          {t('common.Add New')}
+          {t('common:common.Add New')}
         </Button>
       </Flex>
       {formatVariables.length > 0 && (
         <Box mt={2} borderRadius={'md'} overflow={'hidden'} borderWidth={'1px'} borderBottom="none">
           <TableContainer>
-            <Table bg={'white'}>
+            <Table>
               <Thead>
-                <Tr bg={'myGray.50'}>
-                  <Th w={'18px !important'} p={0} />
-                  <Th>{t('core.module.variable.variable name')}</Th>
-                  <Th>{t('core.module.variable.key')}</Th>
-                  <Th>{t('common.Require Input')}</Th>
-                  <Th></Th>
+                <Tr>
+                  <Th
+                    fontSize={'mini'}
+                    borderRadius={'none !important'}
+                    w={'18px !important'}
+                    p={0}
+                  />
+                  <Th fontSize={'mini'}>{t('common:core.module.variable.variable name')}</Th>
+                  <Th fontSize={'mini'}>{t('common:core.module.variable.key')}</Th>
+                  <Th fontSize={'mini'}>{t('common:common.Require Input')}</Th>
+                  <Th fontSize={'mini'} borderRadius={'none !important'}></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -166,7 +169,7 @@ const VariableEdit = ({
       )}
       <MyModal
         iconSrc="core/app/simpleMode/variable"
-        title={t('core.module.Variable Setting')}
+        title={t('common:core.module.Variable Setting')}
         isOpen={isOpenEdit}
         onClose={onCloseEdit}
         maxW={['90vw', '500px']}
@@ -174,30 +177,30 @@ const VariableEdit = ({
         <ModalBody>
           {variableType !== VariableInputEnum.custom && (
             <Flex alignItems={'center'}>
-              <Box w={'70px'}>{t('common.Require Input')}</Box>
+              <FormLabel w={'70px'}>{t('common:common.Require Input')}</FormLabel>
               <Switch {...registerEdit('variable.required')} />
             </Flex>
           )}
           <Flex mt={5} alignItems={'center'}>
-            <Box w={'80px'}>{t('core.module.variable.variable name')}</Box>
+            <FormLabel w={'80px'}>{t('common:core.module.variable.variable name')}</FormLabel>
             <Input
               {...registerEdit('variable.label', {
-                required: t('core.module.variable.variable name is required')
+                required: t('common:core.module.variable.variable name is required')
               })}
             />
           </Flex>
           <Flex mt={5} alignItems={'center'}>
-            <Box w={'80px'}>{t('core.module.variable.key')}</Box>
+            <FormLabel w={'80px'}>{t('common:core.module.variable.key')}</FormLabel>
             <Input
               {...registerEdit('variable.key', {
-                required: t('core.module.variable.key is required')
+                required: t('common:core.module.variable.key is required')
               })}
             />
           </Flex>
 
-          <Box mt={5} mb={2}>
-            {t('core.workflow.Variable.Variable type')}
-          </Box>
+          <FormLabel mt={5} mb={2}>
+            {t('common:core.workflow.Variable.Variable type')}
+          </FormLabel>
           <MyRadio
             gridGap={4}
             gridTemplateColumns={'repeat(2,1fr)'}
@@ -214,15 +217,15 @@ const VariableEdit = ({
           {/* desc */}
           {variableMap[variableType]?.desc && (
             <Box mt={2} fontSize={'sm'} color={'myGray.500'} whiteSpace={'pre-wrap'}>
-              {t(variableMap[variableType].desc)}
+              {t(variableMap[variableType].desc as any)}
             </Box>
           )}
 
           {variableType === VariableInputEnum.input && (
             <>
-              <Box mt={5} mb={2}>
-                {t('core.module.variable.text max length')}
-              </Box>
+              <FormLabel mt={5} mb={2}>
+                {t('common:core.module.variable.text max length')}
+              </FormLabel>
               <Box>
                 <NumberInput max={500} min={1} step={1} position={'relative'}>
                   <NumberInputField
@@ -245,7 +248,7 @@ const VariableEdit = ({
           {variableType === VariableInputEnum.select && (
             <>
               <Box mt={5} mb={2}>
-                {t('core.module.variable.variable options')}
+                {t('common:core.module.variable.variable options')}
               </Box>
               <Box>
                 {selectEnums.map((item, i) => (
@@ -253,7 +256,9 @@ const VariableEdit = ({
                     <FormControl>
                       <Input
                         {...registerEdit(`variable.enums.${i}.value`, {
-                          required: t('core.module.variable.variable option is value is required')
+                          required: t(
+                            'common:core.module.variable.variable option is value is required'
+                          )
                         })}
                       />
                     </FormControl>
@@ -280,7 +285,7 @@ const VariableEdit = ({
                 bg={'myGray.100 !important'}
                 onClick={() => appendEnums({ value: '' })}
               >
-                {t('core.module.variable add option')}
+                {t('common:core.module.variable add option')}
               </Button>
             </>
           )}
@@ -288,17 +293,19 @@ const VariableEdit = ({
 
         <ModalFooter>
           <Button variant={'whiteBase'} mr={3} onClick={onCloseEdit}>
-            {t('common.Close')}
+            {t('common:common.Close')}
           </Button>
           <Button
             onClick={handleSubmitEdit(({ variable }) => {
+              variable.key = variable.key.trim();
+
               // check select
               if (variable.type === VariableInputEnum.select) {
                 const enums = variable.enums.filter((item) => item.value);
                 if (enums.length === 0) {
                   toast({
                     status: 'warning',
-                    title: t('core.module.variable.variable option is required')
+                    title: t('common:core.module.variable.variable option is required')
                   });
                   return;
                 }
@@ -318,7 +325,9 @@ const VariableEdit = ({
               onCloseEdit();
             })}
           >
-            {getValuesEdit('variable.id') ? t('common.Confirm Update') : t('common.Add New')}
+            {getValuesEdit('variable.id')
+              ? t('common:common.Confirm Update')
+              : t('common:common.Add New')}
           </Button>
         </ModalFooter>
       </MyModal>

@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     MongoUser.findByIdAndUpdate(user._id, {
       lastLoginTmbId: userDetail.team.tmbId
     });
-
+    //debugger
     const token = createJWT(userDetail);
     setCookie(res, token);
 

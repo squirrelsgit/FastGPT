@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { jsonRes } from '@fastgpt/service/common/response';
-import { authApp } from '@fastgpt/service/support/permission/auth/app';
+import { authApp } from '@fastgpt/service/support/permission/app/auth';
 import { getGuideModule, getAppChatConfig } from '@fastgpt/global/core/workflow/utils';
 import { getChatModelNameListByModules } from '@/service/core/app/workflow';
 import type { InitChatProps, InitChatResponse } from '@/global/core/chat/api.d';
@@ -10,6 +10,8 @@ import { ChatErrEnum } from '@fastgpt/global/common/error/code/chat';
 import { DispatchNodeResponseKeyEnum } from '@fastgpt/global/core/workflow/runtime/constants';
 import { getAppLatestVersion } from '@fastgpt/service/core/app/controller';
 import { NextAPI } from '@/service/middleware/entry';
+import { ReadPermissionVal } from '@fastgpt/global/support/permission/constant';
+import { FlowNodeTypeEnum } from '@fastgpt/global/core/workflow/node/constant';
 
 async function handler(
   req: NextApiRequest,
@@ -30,18 +32,18 @@ async function handler(
       req,
       authToken: true,
       appId,
-      per: 'r'
+      per: ReadPermissionVal
     }),
     chatId ? MongoChat.findOne({ appId, chatId }) : undefined
   ]);
 
   // auth chat permission
-  if (chat && !app.canWrite && String(tmbId) !== String(chat?.tmbId)) {
+  if (chat && !app.permission.hasManagePer && String(tmbId) !== String(chat?.tmbId)) {
     throw new Error(ChatErrEnum.unAuthChat);
   }
 
   // get app and history
-  const [{ history }, { nodes }] = await Promise.all([
+  const [{ histories }, { nodes }] = await Promise.all([
     getChatItems({
       appId,
       chatId,
@@ -52,6 +54,8 @@ async function handler(
     }),
     getAppLatestVersion(app._id, app)
   ]);
+  const pluginInputs =
+    app?.modules?.find((node) => node.flowNodeType === FlowNodeTypeEnum.pluginInput)?.inputs ?? [];
 
   return {
     chatId,
@@ -59,7 +63,7 @@ async function handler(
     title: chat?.title || '新对话',
     userAvatar: undefined,
     variables: chat?.variables || {},
-    history,
+    history: histories,
     app: {
       chatConfig: getAppChatConfig({
         chatConfig: app.chatConfig,
@@ -71,7 +75,9 @@ async function handler(
       chatModels: getChatModelNameListByModules(nodes),
       name: app.name,
       avatar: app.avatar,
-      intro: app.intro
+      intro: app.intro,
+      type: app.type,
+      pluginInputs
     }
   };
 }

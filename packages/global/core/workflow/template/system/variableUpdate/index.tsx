@@ -1,5 +1,5 @@
 import { FlowNodeInputTypeEnum, FlowNodeTypeEnum } from '../../../node/constant';
-import { FlowNodeTemplateType } from '../../../type/index.d';
+import { FlowNodeTemplateType } from '../../../type/node.d';
 import {
   FlowNodeTemplateTypeEnum,
   NodeInputKeyEnum,
@@ -13,7 +13,7 @@ export const VariableUpdateNode: FlowNodeTemplateType = {
   flowNodeType: FlowNodeTypeEnum.variableUpdate,
   sourceHandle: getHandleConfig(true, true, true, true),
   targetHandle: getHandleConfig(true, true, true, true),
-  avatar: '/imgs/workflow/variable.png',
+  avatar: 'core/workflow/template/variableUpdate',
   name: '变量更新',
   intro: '可以更新指定节点的输出值或更新全局变量',
   showStatus: false,
@@ -25,10 +25,6 @@ export const VariableUpdateNode: FlowNodeTemplateType = {
       valueType: WorkflowIOValueTypeEnum.any,
       label: '',
       renderTypeList: [FlowNodeInputTypeEnum.hidden],
-      editField: {
-        key: true,
-        valueType: true
-      },
       value: [
         {
           variable: ['', ''],

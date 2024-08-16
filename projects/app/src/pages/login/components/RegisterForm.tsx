@@ -7,7 +7,7 @@ import { useSendCode } from '@/web/support/user/hooks/useSendCode';
 import type { ResLogin } from '@/global/support/api/userRes';
 import { useToast } from '@fastgpt/web/hooks/useToast';
 import { postCreateApp } from '@/web/core/app/api';
-import { appTemplates } from '@/web/core/app/templates';
+import { defaultAppTemplates } from '@/web/core/app/templates';
 import { useSystemStore } from '@/web/common/system/useSystemStore';
 import { useTranslation } from 'next-i18next';
 
@@ -67,16 +67,17 @@ const RegisterForm = ({ setPageType, loginSuccess }: Props) => {
           status: 'success'
         });
         // auto register template app
-        setTimeout(() => {
-          appTemplates.forEach((template) => {
-            postCreateApp({
-              avatar: template.avatar,
-              name: t(template.name),
-              modules: template.modules,
-              type: template.type
-            });
-          });
-        }, 100);
+        // setTimeout(() => {
+        //   defaultAppTemplates.forEach((template) => {
+        //     postCreateApp({
+        //       avatar: template.avatar,
+        //       name: t(template.name),
+        //       modules: template.modules,
+        //       edges: template.edges,
+        //       type: template.type
+        //     });
+        //   });
+        // }, 100);
       } catch (error: any) {
         toast({
           title: error.message || '注册异常',
@@ -104,18 +105,18 @@ const RegisterForm = ({ setPageType, loginSuccess }: Props) => {
         <FormControl isInvalid={!!errors.username}>
           <Input
             bg={'myGray.50'}
-            placeholder="邮箱/手机号"
+            placeholder="用户名"
             {...register('username', {
-              required: '邮箱/手机号不能为空',
-              pattern: {
-                value:
-                  /(^1[3456789]\d{9}$)|(^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$)/,
-                message: '邮箱/手机号格式错误'
-              }
+              required: '用户名不能为空',
+              // pattern: {
+              //   value:
+              //     /(^1[3456789]\d{9}$)|(^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$)/,
+              //   message: '邮箱/手机号格式错误'
+              // }
             })}
           ></Input>
         </FormControl>
-        <FormControl
+        {/* <FormControl
           mt={6}
           isInvalid={!!errors.code}
           display={'flex'}
@@ -148,7 +149,7 @@ const RegisterForm = ({ setPageType, loginSuccess }: Props) => {
           >
             {sendCodeText}
           </Box>
-        </FormControl>
+        </FormControl> */}
         <FormControl mt={6} isInvalid={!!errors.password}>
           <Input
             bg={'myGray.50'}
@@ -181,7 +182,7 @@ const RegisterForm = ({ setPageType, loginSuccess }: Props) => {
           type="submit"
           mt={6}
           w={'100%'}
-          size={['md', 'lg']}
+          size={['md', 'md']}
           colorScheme="blue"
           isLoading={requesting}
           onClick={handleSubmit(onclickRegister)}

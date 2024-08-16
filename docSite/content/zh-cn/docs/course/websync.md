@@ -40,7 +40,7 @@ curl https://doc.fastgpt.in/docs/intro/
 好了， 现在点击开始同步，静等系统自动抓取网站信息即可。
 
 
-## 创建应用，绑定知识库
+## 创建对话组，绑定知识库
 
 ![](/imgs/webSync6.webp)
 

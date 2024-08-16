@@ -10,7 +10,10 @@ import type {
   PostLoginProps
 } from '@fastgpt/global/support/user/api.d';
 import { GetWXLoginQRResponse } from '@fastgpt/global/support/user/login/api.d';
-
+import { TeamSchema } from '@fastgpt/global/support/user/team/type';
+import {
+  PermissionValueType
+} from '@fastgpt/global/support/permission/type';
 export const sendAuthCode = (data: {
   username: string;
   type: `${UserAuthTypeEnum}`;
@@ -40,6 +43,24 @@ export const postRegister = ({
     code,
     inviterId,
     password: hashStr(password)
+  });
+
+export const postRegister2 = ({
+  username,
+  password,
+  team,
+  permission
+}: {
+  username: string;
+  password: string;
+  team: TeamSchema | null;
+  permission: PermissionValueType;
+}) =>
+  POST<ResLogin>(`/proApi/support/user/account/register/addUser`, {
+    username,
+    password: hashStr(password),
+    team,
+    permission
   });
 
 export const postFindPassword = ({

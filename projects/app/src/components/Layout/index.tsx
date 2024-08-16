@@ -10,22 +10,13 @@ import { getUnreadCount } from '@/web/support/user/inform/api';
 import dynamic from 'next/dynamic';
 
 import Auth from './auth';
-
+import { useSystem } from '@fastgpt/web/hooks/useSystem';
 const Navbar = dynamic(() => import('./navbar'));
 const NavbarPhone = dynamic(() => import('./navbarPhone'));
-const UpdateInviteModal = dynamic(
-  () => import('@/components/support/user/team/UpdateInviteModal'),
-  { ssr: false }
-);
-const NotSufficientModal = dynamic(() => import('@/components/support/wallet/NotSufficientModal'), {
-  ssr: false
-});
-const SystemMsgModal = dynamic(() => import('@/components/support/user/inform/SystemMsgModal'), {
-  ssr: false
-});
-const ImportantInform = dynamic(() => import('@/components/support/user/inform/ImportantInform'), {
-  ssr: false
-});
+const UpdateInviteModal = dynamic(() => import('@/components/support/user/team/UpdateInviteModal'));
+const NotSufficientModal = dynamic(() => import('@/components/support/wallet/NotSufficientModal'));
+const SystemMsgModal = dynamic(() => import('@/components/support/user/inform/SystemMsgModal'));
+const ImportantInform = dynamic(() => import('@/components/support/user/inform/ImportantInform'));
 
 const pcUnShowLayoutRoute: Record<string, boolean> = {
   '/': true,
@@ -53,28 +44,14 @@ const phoneUnShowLayoutRoute: Record<string, boolean> = {
 const Layout = ({ children }: { children: JSX.Element }) => {
   const router = useRouter();
   const { Loading } = useLoading();
-  const { loading, setScreenWidth, isPc, feConfigs, isNotSufficientModal } = useSystemStore();
+  const { loading, feConfigs, isNotSufficientModal } = useSystemStore();
+  const { isPc } = useSystem();
   const { userInfo } = useUserStore();
 
   const isChatPage = useMemo(
     () => router.pathname === '/chat' && Object.values(router.query).join('').length !== 0,
     [router.pathname, router.query]
   );
-
-  // listen screen width
-  useEffect(() => {
-    const resize = throttle(() => {
-      setScreenWidth(document.documentElement.clientWidth);
-    }, 300);
-
-    window.addEventListener('resize', resize);
-
-    resize();
-
-    return () => {
-      window.removeEventListener('resize', resize);
-    };
-  }, [setScreenWidth]);
 
   const { data, refetch: refetchUnRead } = useQuery(['getUnreadCount'], getUnreadCount, {
     enabled: !!userInfo && !!feConfigs.isPlus,
@@ -106,27 +83,25 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         )}
         {isPc === false && (
           <>
-            <Box h={'100%'} display={['block', 'none']}>
-              {phoneUnShowLayoutRoute[router.pathname] || isChatPage ? (
-                <Auth>{children}</Auth>
-              ) : (
-                <Flex h={'100%'} flexDirection={'column'}>
-                  <Box flex={'1 0 0'} h={0}>
-                    <Auth>{children}</Auth>
-                  </Box>
-                  <Box h={'50px'} borderTop={'1px solid rgba(0,0,0,0.1)'}>
-                    <NavbarPhone unread={unread} />
-                  </Box>
-                </Flex>
-              )}
-            </Box>
+            {phoneUnShowLayoutRoute[router.pathname] || isChatPage ? (
+              <Auth>{children}</Auth>
+            ) : (
+              <Flex h={'100%'} flexDirection={'column'}>
+                <Box flex={'1 0 0'} h={0}>
+                  <Auth>{children}</Auth>
+                </Box>
+                <Box h={'50px'} borderTop={'1px solid rgba(0,0,0,0.1)'}>
+                  <NavbarPhone unread={unread} />
+                </Box>
+              </Flex>
+            )}
           </>
         )}
       </Box>
-      {feConfigs?.isPlus && (
+      {true && (
         <>
           {!!userInfo && <UpdateInviteModal />}
-          {isNotSufficientModal && !isHideNavbar && <NotSufficientModal />}
+          {isNotSufficientModal && <NotSufficientModal />}
           {!!userInfo && <SystemMsgModal />}
           {!!userInfo && importantInforms.length > 0 && (
             <ImportantInform informs={importantInforms} refetch={refetchUnRead} />

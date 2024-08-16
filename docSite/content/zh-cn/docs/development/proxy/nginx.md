@@ -11,9 +11,9 @@ weight: 951
 
 [Sealos](https://cloud.sealos.io/)
 
-## 创建应用
+## 创建对话组
 
-打开 「应用管理」，点击「新建应用」：
+打开 「对话组管理」，点击「新建对话组」：
 
 ![](/imgs/sealos3.webp)  
 ![](/imgs/sealos4.png)
@@ -84,13 +84,13 @@ weight: 951
 
    ![](/imgs/sealos6.png)
 
-### 部署应用
+### 部署对话组
 
 填写完毕后，点击右上角的「部署」，即可完成部署。
 
 ## 修改 FastGPT 环境变量
 
-1. 进入刚刚部署应用的详情，复制外网地址
+1. 进入刚刚部署对话组的详情，复制外网地址
 
    > 注意：这是个 API 地址，点击打开是无效的。如需验证，可以访问: `*.cloud.sealos.io/openai/api`，如果提示 `Invalid URL (GET /api)` 则代表成功。
    

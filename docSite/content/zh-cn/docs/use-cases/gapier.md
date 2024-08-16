@@ -27,7 +27,7 @@ Gapier 是一个在线 GPTs Actions工具，提供了50多种现成工具，并�
 
 ![](/imgs/gapierTool7.png)
 
-## 2. 应用绑定工具
+## 2. 对话组绑定工具
 
 ### 简易模式
 

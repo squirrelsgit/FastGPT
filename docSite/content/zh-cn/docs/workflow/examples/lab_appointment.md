@@ -139,7 +139,7 @@ HTTP模块中，需要设置 3 个工具参数：
     {
       "nodeId": "kge59i",
       "name": "用户引导",
-      "intro": "可以配置应用的系统参数。",
+      "intro": "可以配置对话组的系统参数。",
       "avatar": "/imgs/workflow/userGuide.png",
       "flowNodeType": "userGuide",
       "position": {
@@ -436,7 +436,7 @@ HTTP模块中，需要设置 3 个工具参数：
     },
     {
       "nodeId": "fYxwWym8flYL",
-      "name": "工具调用（实验）",
+      "name": "工具调用",
       "intro": "通过AI模型自动选择一个或多个功能块进行调用，也可以对插件进行调用。",
       "avatar": "/imgs/workflow/tool.svg",
       "flowNodeType": "tools",

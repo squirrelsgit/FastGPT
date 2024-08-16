@@ -1,3 +1,5 @@
+import { getErrText } from '@fastgpt/global/common/error/utils';
+import { ChatRoleEnum } from '@fastgpt/global/core/chat/constants';
 import type { ChatItemType } from '@fastgpt/global/core/chat/type.d';
 import {
   WorkflowIOValueTypeEnum,
@@ -42,10 +44,16 @@ export const filterToolNodeIdByEdges = ({
 
 export const getHistories = (history?: ChatItemType[] | number, histories: ChatItemType[] = []) => {
   if (!history) return [];
-  if (typeof history === 'number') return histories.slice(-(history * 2));
-  if (Array.isArray(history)) return history;
 
-  return [];
+  const systemHistories = histories.filter((item) => item.obj === ChatRoleEnum.System);
+
+  const filterHistories = (() => {
+    if (typeof history === 'number') return histories.slice(-(history * 2));
+    if (Array.isArray(history)) return history;
+    return [];
+  })();
+
+  return [...systemHistories, ...filterHistories];
 };
 
 /* value type format */
@@ -89,11 +97,10 @@ export const removeSystemVariable = (variables: Record<string, any>) => {
 
 export const formatHttpError = (error: any) => {
   return {
-    message: error?.message,
+    message: getErrText(error),
+    data: error?.response?.data,
     name: error?.name,
     method: error?.config?.method,
-    baseURL: error?.config?.baseURL,
-    url: error?.config?.url,
     code: error?.code,
     status: error?.status
   };
