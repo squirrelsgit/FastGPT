@@ -19,7 +19,7 @@ const SideBar = (e?: Props) => {
       flex={foldSideBar ? '0 0 0' : w}
       w={['100%', 0]}
       h={'100%'}
-      zIndex={1}
+      zIndex={0}
       transition={'0.2s'}
       _hover={{
         '& > div': { visibility: 'visible', opacity: 1 }
@@ -57,7 +57,7 @@ const SideBar = (e?: Props) => {
           color={'white'}
         />
       </Flex>
-      <Box position={'relative'} h={'100%'} overflow={foldSideBar ? 'hidden' : 'visible'}>
+      <Box position={'relative'} width={"100%"} h={'100%'} overflow={foldSideBar ? 'hidden' : 'visible'}>
         {children}
       </Box>
     </Box>

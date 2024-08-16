@@ -101,6 +101,7 @@ export const iconPaths = {
   'core/chat/cancelSpeak': () => import('./icons/core/chat/cancelSpeak.svg'),
   'core/chat/chatFill': () => import('./icons/core/chat/chatFill.svg'),
   'core/chat/chatLight': () => import('./icons/core/chat/chatLight.svg'),
+  'core/chat/refresh': () => import('./icons/core/chat/refresh.svg'),
   'core/chat/chatModelTag': () => import('./icons/core/chat/chatModelTag.svg'),
   'core/chat/chevronDown': () => import('./icons/core/chat/chevronDown.svg'),
   'core/chat/chevronSelector': () => import('./icons/core/chat/chevronSelector.svg'),

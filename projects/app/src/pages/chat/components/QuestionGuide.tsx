@@ -35,6 +35,7 @@ const QuestionGuide = ({ text }: { text: string }) => {
             border={theme.borders.sm}
             py={'1px'}
             px={3}
+            maxW={'300px'}
             borderRadius={'md'}
             _hover={{
               '.controller': {

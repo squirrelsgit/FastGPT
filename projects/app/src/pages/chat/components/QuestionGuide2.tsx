@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Box, Flex } from '@chakra-ui/react';
+import { Card, Box, Flex, Button, useTheme } from '@chakra-ui/react';
 import { useMarkdown } from '@/web/common/hooks/useMarkdown';
 import type {
   ChatSiteItemType,
@@ -17,6 +17,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { DatasetDataListItemType } from '@/global/core/dataset/type';
 import { ChatCompletionRequestMessageRoleEnum } from '@fastgpt/global/core/ai/constants';
+import MyIcon from '@fastgpt/web/components/common/Icon';
 const QuestionGuide2 = ({
   appId,
   chatId,
@@ -26,6 +27,7 @@ const QuestionGuide2 = ({
   chatId: string;
   chatRecords: ChatSiteItemType[];
 }) => {
+  const theme = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
   const [result, setResult] = useState("");
@@ -33,6 +35,7 @@ const QuestionGuide2 = ({
   const datasetDatas = [] as DatasetDataListItemType[]
   const [appDetail, setAppDetail] = useState<AppDetailType>(defaultApp);
   const [isAppDetailReady, setIsAppDetailReady] = useState(false);
+  const [shouldFetchData, setShouldFetchData] = useState(false);
   const { loading: loadingApp, runAsync: reloadApp } = useRequest2(
     () => {
       if (appId) {
@@ -107,19 +110,37 @@ const QuestionGuide2 = ({
     return () => {
       isMounted = false;
     };
-  }, [chatId, appDetail]); // 依赖项数组，当这些变量变化时，重新执行副作用
+  }, [appId, appDetail, shouldFetchData]); // 依赖项数组，当这些变量变化时，重新执行副作用
 
-
+  const handleClick = () => {
+    setShouldFetchData(!shouldFetchData); // 触发 useEffect 中的 fetchData
+  };
   return <MyBox
     isLoading={isLoading}
     display={'flex'}
+    alignItems={'center'}
     flexDirection={'column'}
     w={'100%'}
     h={'100%'}
     bg={'white'}
-    // borderRight={['', theme.borders.base]}
+    borderLeft={['', theme.borders.base]}
     whiteSpace={'nowrap'}
   >
+    <Button
+      variant={'whitePrimary'}
+      //flex={['0 0 auto', 1]}
+      //h={'100%'}
+      w={'80%'}
+      px={6}
+      top={'2'}
+      color={'primary.600'}
+      borderRadius={'xl'}
+      leftIcon={<MyIcon name={'core/chat/refresh'} w={'16px'} />}
+      overflow={'hidden'}
+      onClick={() => handleClick()}
+    >
+      {t('common:core.chat.refresh Question Guide')}
+    </Button>
     <QuestionGuide
       text={result}
     />

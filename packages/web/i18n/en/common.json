@@ -338,6 +338,7 @@
       "Mark Description": "The current marking function is in beta.\n\nAfter adding a mark, you need to select a dataset to store the marking data. You can quickly mark questions and expected answers through this function to guide the model's response next time.\n\nCurrently, like other data in the dataset, the marking function is influenced by the model and does not guarantee 100% compliance with expectations after marking.\n\nMarking data is only synchronized one-way with the dataset. If the dataset modifies the marking data, the log display of marking data cannot be synchronized",
       "Mark Description Title": "Introduction to marking function",
       "New Chat": "New conversation",
+      "refresh Question Guide": "refresh Question Guide",
       "Pin": "Pin",
       "Question Guide": "Guess what you want to ask",
       "Quote": "Quote",
