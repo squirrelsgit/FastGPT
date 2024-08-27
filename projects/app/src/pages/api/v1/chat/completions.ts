@@ -117,7 +117,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     variables = {},
     responseChatItemId = getNanoid()
   } = req.body as Props;
-
+debugger
   const originIp = requestIp.getClientIp(req);
 
   const startTime = Date.now();

@@ -66,16 +66,16 @@ const ToolMenu = ({
         },
         ...(onRouteToAppDetail
           ? [
-              {
-                children: [
-                  {
-                    icon: 'core/app/aiLight',
-                    label: t('app:app_detail'),
-                    onClick: onRouteToAppDetail
-                  }
-                ]
-              }
-            ]
+            {
+              children: [
+                {
+                  icon: 'core/app/aiLight',
+                  label: t('app:app_detail'),
+                  onClick: onRouteToAppDetail
+                }
+              ]
+            }
+          ]
           : [])
       ]}
     />

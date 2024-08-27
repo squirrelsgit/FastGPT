@@ -65,7 +65,7 @@ function List() {
           id: dragId,
           parentId: targetId
         });
-      } catch (error) {}
+      } catch (error) { }
       setLoadingDatasetId(undefined);
     }
   });
@@ -257,12 +257,12 @@ function List() {
                             },
                             ...(dataset.permission.hasManagePer
                               ? [
-                                  {
-                                    icon: 'support/team/key',
-                                    label: t('common:permission.Permission'),
-                                    onClick: () => setEditPerDatasetIndex(index)
-                                  }
-                                ]
+                                {
+                                  icon: 'support/team/key',
+                                  label: t('common:permission.Permission'),
+                                  onClick: () => setEditPerDatasetIndex(index)
+                                }
+                              ]
                               : [])
                           ]
                         },
@@ -283,17 +283,17 @@ function List() {
                         //   : []),
                         ...(dataset.permission.hasManagePer
                           ? [
-                              {
-                                children: [
-                                  {
-                                    icon: 'delete',
-                                    label: t('common:common.Delete'),
-                                    type: 'danger' as 'danger',
-                                    onClick: () => onClickDeleteDataset(dataset._id)
-                                  }
-                                ]
-                              }
-                            ]
+                            {
+                              children: [
+                                {
+                                  icon: 'delete',
+                                  label: t('common:common.Delete'),
+                                  type: 'danger' as 'danger',
+                                  onClick: () => onClickDeleteDataset(dataset._id)
+                                }
+                              ]
+                            }
+                          ]
                           : [])
                       ]}
                     />

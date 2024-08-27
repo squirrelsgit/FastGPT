@@ -11,6 +11,7 @@ import { getDocPath } from '@/web/common/system/doc';
 import Loading from '@fastgpt/web/components/common/MyLoading';
 import { useContextSelector } from 'use-context-selector';
 import { DatasetImportContext } from '../Context';
+import { stubFalse } from 'lodash';
 
 const DataProcess = dynamic(() => import('../commonProgress/DataProcess'), {
   loading: () => <Loading fixed={false} />
@@ -79,7 +80,7 @@ const CustomLinkImport = () => {
         <Box flex={'0 0 100px'} fontSize={'sm'}>
           {t('common:core.dataset.website.Selector')}
           <Box color={'myGray.500'} fontSize={'sm'}>
-            {feConfigs?.docUrl && (
+            {false && (
               <Link href={getDocPath('/docs/course/websync/#选择器如何使用')} target="_blank">
                 {t('common:core.dataset.website.Selector Course')}
               </Link>
